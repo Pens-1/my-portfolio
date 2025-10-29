@@ -42,7 +42,7 @@ const Contact = () => {
   };
 
   const socialLinks = [
-    { icon: Github, label: 'GitHub', href: '#' },
+    { icon: Github, label: 'GitHub', href: 'https://github.com/Pens-1' },
     { icon: Linkedin, label: 'LinkedIn', href: '#' },
     { icon: Twitter, label: 'Twitter', href: '#' },
     { icon: Mail, label: 'Email', href: 'mailto:contact@example.com' },
@@ -73,7 +73,9 @@ const Contact = () => {
               isVisible ? 'fade-in delay-300' : 'opacity-0'
             }`}
           >
-            新しいプロジェクトのご相談、協業のお誘いをお待ちしています
+            業務自動化やデータ処理システムのご相談、協業のお誘いをお待ちしています。
+            <br />
+            ご都合にあわせて、柔軟に調整可能です。
           </p>
         </div>
 
@@ -92,7 +94,7 @@ const Contact = () => {
                 onChange={handleChange}
                 placeholder="Name"
                 required
-                className="w-full bg-transparent border-b border-white/20 py-4 text-white placeholder-white/40 focus:border-gold outline-none transition-colors"
+                className="w-full bg-transparent border-b border-white/20 py-4 text-white placeholder-white/40 focus:border-gold focus:border-b-2 outline-none transition-all duration-300 hover:border-white/40 focus:shadow-[0_1px_0_0_rgba(212,175,55,0.5)]"
               />
             </div>
             <div>
@@ -103,7 +105,7 @@ const Contact = () => {
                 onChange={handleChange}
                 placeholder="Email"
                 required
-                className="w-full bg-transparent border-b border-white/20 py-4 text-white placeholder-white/40 focus:border-gold outline-none transition-colors"
+                className="w-full bg-transparent border-b border-white/20 py-4 text-white placeholder-white/40 focus:border-gold focus:border-b-2 outline-none transition-all duration-300 hover:border-white/40 focus:shadow-[0_1px_0_0_rgba(212,175,55,0.5)]"
               />
             </div>
           </div>
@@ -116,17 +118,18 @@ const Contact = () => {
               placeholder="Message"
               required
               rows={6}
-              className="w-full bg-transparent border-b border-white/20 py-4 text-white placeholder-white/40 focus:border-gold outline-none transition-colors resize-none"
+              className="w-full bg-transparent border-b border-white/20 py-4 text-white placeholder-white/40 focus:border-gold focus:border-b-2 outline-none transition-all duration-300 hover:border-white/40 focus:shadow-[0_1px_0_0_rgba(212,175,55,0.5)] resize-none"
             />
           </div>
 
           <div className="flex justify-center">
             <button
               type="submit"
-              className="group flex items-center gap-3 px-12 py-4 border border-gold text-gold hover:bg-gold hover:text-black transition-all duration-300"
+              className="group flex items-center gap-3 px-12 py-4 border border-gold text-gold hover:bg-gold hover:text-black transition-all duration-300 transform-gpu hover:scale-105 hover:shadow-lg hover:shadow-gold/50 relative overflow-hidden"
             >
-              <span className="tracking-wider">Send Message</span>
-              <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <span className="relative z-10 tracking-wider">Send Message</span>
+              <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform relative z-10" />
+              <div className="absolute inset-0 bg-gradient-to-r from-gold/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </button>
           </div>
         </form>
@@ -145,7 +148,7 @@ const Contact = () => {
               className="group"
               aria-label={social.label}
             >
-              <social.icon className="w-6 h-6 text-white/60 hover:text-gold transition-colors" />
+              <social.icon className="w-6 h-6 text-white/60 hover:text-gold transition-all duration-300 hover:scale-125 hover:rotate-12 transform-gpu" />
             </a>
           ))}
         </div>

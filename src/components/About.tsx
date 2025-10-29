@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Globe, Users, Zap } from 'lucide-react';
+import { Globe, Users, Zap, Github } from 'lucide-react';
 
 const About = () => {
   const [visibleSections, setVisibleSections] = useState<string[]>([]);
@@ -30,38 +30,37 @@ const About = () => {
   const experiences = [
     {
       icon: Globe,
-      title: 'Global Perspective',
-      subtitle: 'グローバルな視点',
+      title: 'International Experience',
+      subtitle: '国際経験',
       description:
-        '海外留学を通じて培った国際的な視野。異なる文化や価値観の中で学んだ、柔軟な思考力とコミュニケーション能力。多様性を理解し、グローバルな視点から課題を捉える力を身につけました。',
-    },
-    {
-      icon: Users,
-      title: 'Collaboration & Leadership',
-      subtitle: '協調性とリーダーシップ',
-      description:
-        'サークル活動を通じて磨いた、チームワークとリーダーシップ。メンバーの個性を活かしながら、共通の目標に向かって組織を導く経験。協調性と主体性のバランスを学びました。',
+        '2024年8月にカナダ留学を経験。異なる文化や価値観の中で学んだ、柔軟な思考力とコミュニケーション能力。グローバルな視点から課題を捉える力を身につけました。',
     },
     {
       icon: Zap,
-      title: 'Intensive Challenge',
-      subtitle: '集中的な挑戦',
+      title: 'Hackathon Participation',
+      subtitle: 'ハッカソン参加',
       description:
-        'ハッカソンでの短期集中開発経験。限られた時間の中で、アイデアを形にし、プレゼンテーションまで完遂する実行力。プレッシャーの中で最高のパフォーマンスを発揮する力を養いました。',
+        '学生開発エコシステム（2025年4月）、Track Job Beginner\'s Hackathon（2025年8月）に参加。限られた時間の中で、アイデアを形にし、課題を解決するシステムを設計・実装する実行力を養いました。',
+    },
+    {
+      icon: Users,
+      title: 'Technical Expertise',
+      subtitle: '技術的専門性',
+      description:
+        '機械学習、データサイエンス、基幹システムに強みを持ち、業務自動化やデータ処理システムの構築を得意としています。技術的好奇心を持ち、積極的に学習・導入を進めています。',
     },
   ];
 
   const expertise = [
-    'Frontend Development',
-    'UI/UX Design',
-    'Brand Strategy',
-    'Web3 Integration',
+    'Python',
+    'TypeScript',
+    'React',
+    'Docker',
+    'Git',
   ];
 
   const qualifications = [
-    'Bachelor of Engineering',
-    'AWS Certified Solutions Architect',
-    'Google UX Design Certificate',
+    'Python基礎技術者認定',
   ];
 
   return (
@@ -97,15 +96,15 @@ const About = () => {
               }`}
             >
               <div>
-                <h2 className="text-5xl md:text-6xl mb-6">Philosophy</h2>
+                <h2 className="text-5xl md:text-6xl mb-6">About</h2>
                 <div className="w-16 h-px bg-gold mb-8" />
                 <p className="text-lg text-white/70 leading-relaxed mb-6">
-                  完璧なデザインとは、何も加えるものがなくなった時ではなく、
-                  何も削るものがなくなった時に完成する。
+                  Pythonを中心としたバックエンド開発、特に業務自動化やデータ処理システムの構築を得意としております。
                 </p>
                 <p className="text-white/70 leading-relaxed">
-                  私は、シンプルさの中に潜む本質的な美しさを追求します。
-                  技術とデザインの調和により、ユーザーに真の価値を提供することを信念としています。
+                  学生の身ではありますが、個人開発やハッカソンへの参加を通じて、単にコードを書くだけでなく、
+                  「課題を解決するためのシステム」を設計・実装する実践的なスキルを磨いてまいりました。
+                  機械学習、データサイエンス、基幹システムに興味を持ち、日々技術を学んでいます。
                 </p>
               </div>
 
@@ -141,6 +140,18 @@ const About = () => {
                     ))}
                   </ul>
                 </div>
+              </div>
+
+              <div className="pt-8 border-t border-white/10">
+                <a
+                  href="https://github.com/Pens-1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 text-white/80 hover:text-gold transition-colors group"
+                >
+                  <Github className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  <span className="text-sm font-light">View my work on GitHub</span>
+                </a>
               </div>
             </div>
           </div>
@@ -180,13 +191,16 @@ const About = () => {
                     : 'opacity-0'
                 }`}
               >
-                <div className="border border-white/10 p-8 h-full hover:border-gold/50 transition-colors duration-500">
-                  <exp.icon className="w-12 h-12 text-gold mb-6 group-hover:scale-110 transition-transform duration-500" />
-                  <h3 className="text-2xl mb-2">{exp.title}</h3>
+                <div className="border border-white/10 p-8 h-full hover:border-gold/50 transition-all duration-500 hover:shadow-lg hover:shadow-gold/20 transform-gpu hover:translate-y-[-4px]">
+                  <div className="relative">
+                    <exp.icon className="w-12 h-12 text-gold mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 transform-gpu" />
+                    <div className="absolute top-0 left-0 w-12 h-12 bg-gold/10 rounded-full opacity-0 group-hover:opacity-100 group-hover:scale-150 transition-all duration-500" />
+                  </div>
+                  <h3 className="text-2xl mb-2 group-hover:text-gold transition-colors duration-300">{exp.title}</h3>
                   <p className="text-gold text-sm mb-6 font-light">
                     {exp.subtitle}
                   </p>
-                  <p className="text-white/70 leading-relaxed text-sm">
+                  <p className="text-white/70 leading-relaxed text-sm group-hover:text-white/90 transition-colors duration-300">
                     {exp.description}
                   </p>
                 </div>
