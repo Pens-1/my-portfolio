@@ -1,0 +1,48 @@
+---
+id: 1
+title: "数理最適化スケジュール管理サイト"
+role: "Lead Engineer / Full-Stack"
+period: "2024.09 - 2024.12 (3 months)"
+teamSize: "3 Members"
+category: "Web Application"
+imageUrl: "https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=800"
+size: "large"
+githubUrl: "https://github.com/Pens-1/ortools-scheduling-verify"
+technologies: ["Python", "OR-Tools", "Google Optimization Tools"]
+description: "Google OR-Toolsを使用したスケジュール最適化モジュール。複雑な条件（優先順位など）を考慮したスケジュールを自動作成するWebアプリケーション。"
+---
+
+# Project Overview
+
+このプロジェクトは、複雑な制約条件を持つスケジュール作成業務を自動化するために開発されました。
+Google OR-Tools（数理最適化ソルバー）を使用し、人間の手では数時間かかる作成作業を数秒で完了させます。
+
+## Key Features
+
+### 🧩 複雑な制約への対応
+- スタッフの希望シフト
+- 必要人数の要件
+- 連続勤務の制限
+- スキルセットによる配置要件
+
+これら全ての条件を満たす最適解を導き出します。
+
+### ⚡ 高速な計算処理
+独自のヒューリスティックとOR-Toolsの組み合わせにより、計算時間を大幅に短縮しました。
+
+## System Architecture
+
+```mermaid
+graph TD
+    A[Frontend / React] --> B[API / FastAPI]
+    B --> C[Solver / Google OR-Tools]
+    C --> D[Database / PostgreSQL]
+    D --> B
+    B --> A
+```
+
+## Future Improvements
+
+- [ ] AIによる需要予測の導入
+- [ ] モバイルアプリ化
+- [ ] リアルタイム通知機能

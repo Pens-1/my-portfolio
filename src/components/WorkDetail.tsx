@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Github, ExternalLink, ArrowLeft, Code2, Calendar } from 'lucide-react';
-import { works } from './Works';
+import { Github, ExternalLink, ArrowLeft } from 'lucide-react';
+import { getWorkById, Work } from '../lib/works';
+import MDXComponents from './MDXComponents';
 
 const WorkDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [work, setWork] = useState<typeof works[0] | undefined>();
+  const [work, setWork] = useState<Work | undefined>();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     if (id) {
-      const foundWork = works.find((w) => w.id === parseInt(id));
+      const foundWork = getWorkById(parseInt(id));
       setWork(foundWork);
       setIsVisible(true);
     }
@@ -76,104 +77,84 @@ const WorkDetail = () => {
       {/* Content Section */}
       <section className="py-20 px-8">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-12">
+          <div className="grid lg:grid-cols-[1fr_300px] gap-12 lg:gap-24 items-start">
             {/* Main Content */}
-            <div className="md:col-span-2 space-y-12">
+            <div className="min-w-0"> {/* min-w-0 prevents flex item from overflowing */}
               <div className={`${isVisible ? 'fade-in delay-200' : 'opacity-0'}`}>
-                <h2 className="text-4xl mb-6">Project Overview</h2>
-                <div className="space-y-4 text-white/70 leading-relaxed">
-                  <p>
-                    {work.description}
-                  </p>
-                  <p>
-                    このプロジェクトでは、最新の技術とベストプラクティスを活用して、
-                    ユーザーに価値のある体験を提供することを目指しています。
-                  </p>
-                </div>
+                <work.Content components={MDXComponents} />
               </div>
 
-              {/* Features */}
-              <div className={`${isVisible ? 'fade-in delay-300' : 'opacity-0'}`}>
-                <h2 className="text-4xl mb-6">Key Features</h2>
-                <div className="grid grid-cols-1 gap-6">
-                  <div className="border border-white/10 p-6 hover:border-gold/50 transition-colors">
-                    <div className="flex items-center gap-3 mb-3">
-                      <Code2 className="w-6 h-6 text-gold" />
-                      <h3 className="text-xl">Modern Architecture</h3>
-                    </div>
-                    <p className="text-white/70 text-sm">
-                      スケーラブルで保守性の高いアーキテクチャを採用。モジュール設計により拡張性を確保。
-                    </p>
-                  </div>
-                  <div className="border border-white/10 p-6 hover:border-gold/50 transition-colors">
-                    <div className="flex items-center gap-3 mb-3">
-                      <Calendar className="w-6 h-6 text-gold" />
-                      <h3 className="text-xl">Performance Optimized</h3>
-                    </div>
-                    <p className="text-white/70 text-sm">
-                      パフォーマンスを最優先に設計。効率的なデータ処理と最適化されたレンダリングを実現。
-                    </p>
-                  </div>
-                </div>
+              {/* Back to Top */}
+              <div className="mt-24 pt-12 border-t border-white/10 text-center">
+                <button
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                  className="text-gold hover:text-white transition-colors text-sm tracking-widest uppercase hover:underline underline-offset-4"
+                >
+                  Back to Top
+                </button>
               </div>
             </div>
 
-            {/* Sidebar */}
-            <div className="space-y-8">
-              {/* Technologies */}
-              <div className={`border border-white/10 p-6 ${isVisible ? 'fade-in delay-400' : 'opacity-0'}`}>
-                <h3 className="text-gold text-sm tracking-widest mb-4 uppercase">Technologies</h3>
-                <div className="flex flex-wrap gap-2">
+            {/* Sidebar (Sticky) */}
+            <div className={`space-y-8 lg:sticky lg:top-32 ${isVisible ? 'fade-in delay-400' : 'opacity-0'}`}>
+              <div className="p-8 border border-white/10 bg-white/5 backdrop-blur-sm rounded-lg hover:border-gold/30 transition-colors">
+                <h3 className="text-gold text-xs tracking-widest mb-6 uppercase flex items-center gap-2">
+                  <span className="w-8 h-px bg-gold"></span>
+                  Project Info
+                </h3>
+                
+                <div className="space-y-6">
+                  <div>
+                    <p className="text-white/40 text-xs mb-1 uppercase tracking-wider">Category</p>
+                    <p className="text-white font-light">{work.category}</p>
+                  </div>
+                  <div>
+                    <p className="text-white/40 text-xs mb-1 uppercase tracking-wider">Type</p>
+                    <p className="text-white font-light text-sm">{work.size === 'large' ? 'Large Scale Project' : 'Project'}</p>
+                  </div>
+                  
+                  <div className="pt-6 border-t border-white/10">
+                    <p className="text-white/40 text-xs mb-3 uppercase tracking-wider">Links</p>
+                    <div className="flex flex-col gap-3">
+                      {work.githubUrl && (
+                        <a
+                          href={work.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-3 text-sm text-white/80 hover:text-gold transition-colors group"
+                        >
+                          <Github className="w-4 h-4" />
+                          <span>Source Code</span>
+                          <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity ml-auto" />
+                        </a>
+                      )}
+                      {work.demoUrl && (
+                        <a
+                          href={work.demoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-3 text-sm text-white/80 hover:text-gold transition-colors group"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          <span>Live Demo</span>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-8 border border-white/10 rounded-lg hover:border-gold/30 transition-colors">
+                 <h3 className="text-white/40 text-xs tracking-widest mb-6 uppercase">Technologies</h3>
+                 <div className="flex flex-wrap gap-2">
                   {work.technologies.map((tech, idx) => (
                     <span
                       key={idx}
-                      className="px-3 py-1 text-xs bg-white/10 text-white/80 rounded-full border border-white/20 hover:bg-gold/20 hover:border-gold transition-colors"
+                      className="px-3 py-1.5 text-xs bg-white/5 text-white/80 border border-white/10 rounded-sm hover:bg-gold/10 hover:border-gold/30 transition-all duration-300"
                     >
                       {tech}
                     </span>
                   ))}
-                </div>
-              </div>
-
-              {/* Links */}
-              <div className={`border border-white/10 p-6 space-y-4 ${isVisible ? 'fade-in delay-500' : 'opacity-0'}`}>
-                <h3 className="text-gold text-sm tracking-widest mb-4 uppercase">Links</h3>
-                {work.githubUrl && (
-                  <a
-                    href={work.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 text-white/80 hover:text-gold transition-colors group"
-                  >
-                    <Github className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                    <span className="text-sm">View on GitHub</span>
-                  </a>
-                )}
-                {work.demoUrl && (
-                  <a
-                    href={work.demoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 text-white/80 hover:text-gold transition-colors group"
-                  >
-                    <ExternalLink className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                    <span className="text-sm">View Demo</span>
-                  </a>
-                )}
-              </div>
-
-              {/* Project Info */}
-              <div className={`border border-white/10 p-6 ${isVisible ? 'fade-in delay-600' : 'opacity-0'}`}>
-                <h3 className="text-gold text-sm tracking-widest mb-4 uppercase">Project Info</h3>
-                <div className="space-y-3 text-sm text-white/70">
-                  <div>
-                    <p className="text-gold text-xs mb-1">Category</p>
-                    <p>{work.category}</p>
-                  </div>
-                  <div>
-                    <p className="text-gold text-xs mb-1">Type</p>
-                    <p>{work.size === 'large' ? 'Large Project' : work.size === 'medium' ? 'Medium Project' : 'Small Project'}</p>
-                  </div>
                 </div>
               </div>
             </div>

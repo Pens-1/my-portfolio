@@ -35,23 +35,49 @@ const Home = () => {
         <div className="absolute bottom-1/4 right-1/3 w-1 h-1 bg-gold/50 rounded-full animate-pulse" style={{ animationDelay: '1.5s' }} />
       </div>
 
-      <div className="relative z-10 text-center px-8 max-w-5xl mx-auto">
+      <div className="relative z-10 text-center px-8 max-w-6xl mx-auto">
+        <div className={`mb-6 flex justify-center gap-4 ${isVisible ? 'fade-in' : 'opacity-0'}`}>
+          {['Python', 'React', 'Docker', 'Automation'].map((tech, i) => (
+             <span key={i} className="text-gold/80 text-sm tracking-widest uppercase border border-gold/30 px-3 py-1 rounded-full bg-black/20 backdrop-blur-sm">
+               {tech}
+             </span>
+          ))}
+        </div>
+
         <h1
-          className={`text-7xl md:text-8xl lg:text-9xl mb-8 text-shine transform-gpu ${
+          className={`text-5xl md:text-7xl lg:text-8xl mb-8 font-light tracking-tight text-white ${
             isVisible ? 'fade-in animate-float' : 'opacity-0'
           }`}
         >
-          Automation & Data
+          Full-Stack <span className="text-gold font-normal">Automation</span> Engineer
         </h1>
+        
         <p
-          className={`text-xl md:text-2xl text-white/80 font-light tracking-wide leading-relaxed max-w-2xl mx-auto ${
+          className={`text-xl md:text-2xl text-white/80 font-light tracking-wide leading-relaxed max-w-2xl mx-auto mb-10 ${
             isVisible ? 'fade-in delay-300' : 'opacity-0'
           }`}
         >
-          Pythonを中心としたバックエンド開発。業務自動化とデータ処理により、
+          Building robust systems that save time and empower decisions.
           <br />
-          課題を解決するシステムを設計・実装します。
+          Specializing in Data Processing, Web Development, and AI Integration.
         </p>
+
+        <div className={`flex flex-col md:flex-row gap-6 justify-center ${isVisible ? 'fade-in delay-500' : 'opacity-0'}`}>
+          <a
+             href="#works"
+             className="px-8 py-3 bg-gold text-black font-medium tracking-wide rounded-sm hover:bg-white transition-colors duration-300 transform hover:-translate-y-1"
+          >
+            View Selected Works
+          </a>
+          <a
+             href="https://github.com/Pens-1"
+             target="_blank"
+             rel="noopener noreferrer"
+             className="px-8 py-3 border border-white/30 text-white font-medium tracking-wide rounded-sm hover:bg-white/10 hover:border-white transition-all duration-300"
+          >
+            Contact / GitHub
+          </a>
+        </div>
       </div>
 
       <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 animate-float">
