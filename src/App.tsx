@@ -6,6 +6,7 @@ import Works from './components/Works';
 import About from './components/About';
 import Contact from './components/Contact';
 import WorkDetail from './components/WorkDetail';
+import CustomCursor from './components/CustomCursor';
 
 function App() {
   useEffect(() => {
@@ -14,6 +15,7 @@ function App() {
 
   const HomePage = () => (
     <div className="relative">
+      <CustomCursor />
       <Navigation />
       <main>
         <Home />

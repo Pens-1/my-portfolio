@@ -10,10 +10,8 @@ const About = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const sectionId = entry.target.getAttribute('data-section');
-            if (sectionId) {
-              setVisibleSections((prev) => [...new Set([...prev, sectionId])]);
-            }
+            const id = entry.target.getAttribute('data-section');
+            if (id) setVisibleSections((prev) => [...new Set([...prev, id])]);
           }
         });
       },
@@ -27,6 +25,8 @@ const About = () => {
     return () => observer.disconnect();
   }, []);
 
+  const isVisible = (id: string) => visibleSections.includes(id);
+
   const timeline = [
     {
       year: '2024.08',
@@ -34,6 +34,7 @@ const About = () => {
       subtitle: 'Vancouver, Canada',
       description: '語学留学を経験。異文化環境でのコミュニケーション能力と、多様な価値観への適応力を習得。',
       icon: <GlobeIcon />,
+      color: 'neo-yellow',
     },
     {
       year: '2025.04',
@@ -41,140 +42,211 @@ const About = () => {
       subtitle: 'Tokyo, Japan',
       description: '学生開発コミュニティに参加。チーム開発のベストプラクティスとモダンな開発フローを実践的に学習。',
       icon: <UsersIcon />,
+      color: 'neo-pink',
     },
     {
       year: '2025.08',
       title: "Track Job Beginner's Hackathon",
       subtitle: 'Team Leader',
       description: 'ハッカソンに参加し、リーダーとしてチームを牽引。短期間でのプロトタイプ開発とプレゼンテーションを実施。',
-      icon: <Trophy className="w-5 h-5" />,
+      icon: <Trophy className="w-4 h-4" />,
+      color: 'neo-green',
     },
     {
       year: 'Present',
       title: 'Continuing Education & Dev',
       subtitle: 'University / Personal Projects',
       description: '大学での研究に加え、個人開発でAI統合アプリケーションや業務効率化ツールを継続的に開発中。',
-      icon: <GraduationCap className="w-5 h-5" />,
+      icon: <GraduationCap className="w-4 h-4" />,
+      color: 'neo-blue',
     },
   ];
 
   const skillCategories = [
     {
       title: 'Languages',
-      icon: <Code2 className="w-5 h-5 text-gold" />,
+      icon: <Code2 className="w-4 h-4" />,
+      color: 'neo-yellow',
       skills: ['Python', 'TypeScript', 'JavaScript', 'SQL (PostgreSQL)', 'HTML5/CSS3'],
     },
     {
-      title: 'Frameworks & Libraries',
-      icon: <Cpu className="w-5 h-5 text-gold" />,
+      title: 'Frameworks',
+      icon: <Cpu className="w-4 h-4" />,
+      color: 'neo-pink',
       skills: ['React', 'Next.js', 'FastAPI', 'Flask', 'Pandas', 'Selenium', 'Playwright'],
     },
     {
-      title: 'Infrastructure & Tools',
-      icon: <Database className="w-5 h-5 text-gold" />,
+      title: 'Infra & Tools',
+      icon: <Database className="w-4 h-4" />,
+      color: 'neo-green',
       skills: ['Docker', 'Git / GitHub', 'Linux (Ubuntu)', 'VS Code', 'Vercel'],
     },
   ];
 
-  const qualifications = ['Python 3 Engineering Certification (Basic)'];
+  const colorMap: Record<string, string> = {
+    'neo-yellow': '#FBFF48',
+    'neo-pink': '#FF70A6',
+    'neo-green': '#33FF57',
+    'neo-blue': '#3B82F6',
+  };
 
   return (
-    <section id="about" className="min-h-screen bg-black py-32 px-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-32">
-          {/* Intro Section - Centered and Clean */}
-          <div
-            ref={(el) => (sectionRefs.current['intro'] = el)}
-            data-section="intro"
-            className={`text-center max-w-3xl mx-auto mb-20 ${visibleSections.includes('intro') ? 'fade-in' : 'opacity-0'}`}
-          >
-            <h2 className="text-5xl font-light mb-8">About Me</h2>
-            <p className="text-white/80 leading-relaxed text-lg mb-8 font-light">
-               「自動化」と「最適化」に情熱を注ぐエンジニア。
-               <br className="hidden md:block" />
-               単調な作業をプログラムに任せ、人間がより創造的な活動に集中できる世界を目指しています。
-            </p>
-            <div className="flex justify-center gap-4">
-              <a
-                href="https://github.com/Pens-1"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-gold border border-gold/30 px-6 py-2 rounded-full hover:bg-gold hover:text-black transition-colors"
-                aria-label="GitHub Profile"
-              >
-                <Github className="w-4 h-4" />
-                <span>GitHub Profile</span>
-              </a>
-            </div>
-          </div>
+    <section id="about" className="relative min-h-screen bg-neo-black py-32 px-8 overflow-hidden">
+      <span className="section-num">03</span>
 
-          {/* Technical Skills - 3 Column Grid */}
-          <div
-             ref={(el) => (sectionRefs.current['skills'] = el)}
-             data-section="skills"
-             className={`grid md:grid-cols-3 gap-8 ${visibleSections.includes('skills') ? 'slide-up delay-200' : 'opacity-0'}`}
+      <div className="max-w-6xl mx-auto">
+
+        {/* Header */}
+        <div className="mb-20">
+          <div className="font-mono text-neo-green/60 text-xs uppercase tracking-[0.3em] mb-3">
+            &gt; Background / Skills
+          </div>
+          <h2
+            className="font-display font-black text-white leading-none"
+            style={{ fontSize: 'clamp(2.5rem, 7vw, 6rem)' }}
           >
-             {skillCategories.map((cat, i) => (
-               <div key={i} className="bg-white/5 p-6 border border-white/10 hover:border-gold/30 transition-colors">
-                 <div className="flex items-center gap-3 mb-6">
-                   <div className="p-2 bg-black rounded-full border border-gold/20 text-gold">
-                      {cat.icon}
-                   </div>
-                   <h3 className="text-lg font-medium tracking-wide">{cat.title}</h3>
-                 </div>
-                 <div className="flex flex-wrap gap-2">
-                   {cat.skills.map((skill, j) => (
-                     <span key={j} className="text-xs text-white/70 bg-black/50 px-2.5 py-1.5 rounded border border-white/10">
-                       {skill}
-                     </span>
-                   ))}
-                 </div>
-               </div>
-             ))}
-          </div>
-          
-          <div className={`mt-12 text-center ${visibleSections.includes('skills') ? 'fade-in delay-300' : 'opacity-0'}`}>
-              <span className="text-sm text-gold tracking-widest uppercase mr-3">Qualifications</span>
-              <span className="text-white/60 text-sm font-light">
-                {qualifications.join(" • ")}
-              </span>
-          </div>
+            ABOUT<br />
+            <span className="text-neo-green">ME</span>
+          </h2>
+          <div className="mt-6 w-16 h-1 bg-neo-green" />
         </div>
 
-        {/* Timeline Section */}
+        {/* Intro */}
+        <div
+          ref={(el) => (sectionRefs.current['intro'] = el)}
+          data-section="intro"
+          className={`mb-16 max-w-2xl border-l-4 border-neo-green pl-6 transition-all duration-700 ${
+            isVisible('intro') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+          }`}
+        >
+          <p className="text-white/70 font-body text-lg leading-relaxed mb-6">
+            「自動化」と「最適化」に情熱を注ぐエンジニア。<br />
+            単調な作業をプログラムに任せ、人間がより創造的な活動に集中できる世界を目指しています。
+          </p>
+          <a
+            href="https://github.com/Pens-1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="neo-btn inline-flex border-2 border-neo-green text-neo-green bg-transparent shadow-[4px_4px_0_#33FF57] hover:shadow-[1px_1px_0_#33FF57] hover:translate-x-[3px] hover:translate-y-[3px] transition-all duration-100"
+          >
+            <Github className="w-4 h-4" />
+            GitHub Profile
+          </a>
+        </div>
+
+        {/* Skill Cards */}
+        <div
+          ref={(el) => (sectionRefs.current['skills'] = el)}
+          data-section="skills"
+          className={`grid md:grid-cols-3 gap-5 mb-8 transition-all duration-700 delay-100 ${
+            isVisible('skills') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          {skillCategories.map((cat, i) => (
+            <div
+              key={i}
+              className="border-2 bg-neo-black p-6"
+              style={{
+                borderColor: colorMap[cat.color],
+                boxShadow: `5px 5px 0 ${colorMap[cat.color]}`,
+              }}
+            >
+              <div className="flex items-center gap-2 mb-5" style={{ color: colorMap[cat.color] }}>
+                {cat.icon}
+                <span className="font-mono text-xs uppercase tracking-widest">{cat.title}</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {cat.skills.map((skill, j) => (
+                  <span
+                    key={j}
+                    className="font-mono text-[10px] text-white/60 bg-white/5 px-2 py-1 border border-white/10 uppercase tracking-wider"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Qualification */}
+        <div
+          className={`mb-24 transition-all duration-700 delay-200 ${
+            isVisible('skills') ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <span className="font-mono text-xs text-neo-green/70 uppercase tracking-widest mr-3">
+            Qualification
+          </span>
+          <span className="font-body text-white/50 text-sm">
+            Python 3 Engineering Certification (Basic)
+          </span>
+        </div>
+
+        {/* Timeline */}
         <div
           ref={(el) => (sectionRefs.current['timeline'] = el)}
           data-section="timeline"
-          className={`max-w-4xl mx-auto ${visibleSections.includes('timeline') ? 'fade-in' : 'opacity-0'}`}
+          className={`transition-all duration-700 delay-150 ${
+            isVisible('timeline') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
         >
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-light mb-4">Journey</h2>
-            <div className="w-12 h-px bg-gold mx-auto opacity-50"></div>
+          <div className="font-mono text-neo-green/60 text-xs uppercase tracking-[0.3em] mb-3">
+            &gt; Career Journey
           </div>
+          <h3
+            className="font-display font-black text-white mb-12"
+            style={{ fontSize: 'clamp(2rem, 5vw, 4rem)' }}
+          >
+            JOURNEY
+          </h3>
 
-          <div className="relative border-l border-white/10 ml-4 md:ml-0 space-y-12 pb-12">
+          <div className="space-y-8">
             {timeline.map((item, index) => (
-              <div key={index} className="relative md:grid md:grid-cols-[120px_1fr] gap-8 pl-8 md:pl-0">
-                
-                {/* Timeline Dot */}
-                <div className="absolute -left-[5px] top-1 w-2.5 h-2.5 bg-black border border-gold rounded-full z-10"></div>
-
-                {/* Date (Left on Desktop) */}
-                <div className="hidden md:flex flex-col items-end text-right pt-0.5">
-                   <span className="text-gold font-mono text-lg">{item.year}</span>
+              <div
+                key={index}
+                className="flex gap-6 border-2 border-white/10 p-6 transition-all duration-200 hover:border-opacity-100"
+                style={{
+                  ['--hover-color' as string]: colorMap[item.color],
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLDivElement).style.borderColor = colorMap[item.color];
+                  (e.currentTarget as HTMLDivElement).style.boxShadow = `4px 4px 0 ${colorMap[item.color]}`;
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.1)';
+                  (e.currentTarget as HTMLDivElement).style.boxShadow = 'none';
+                }}
+              >
+                {/* Year */}
+                <div className="flex-shrink-0 w-24">
+                  <span
+                    className="font-mono text-sm font-bold"
+                    style={{ color: colorMap[item.color] }}
+                  >
+                    {item.year}
+                  </span>
                 </div>
 
-                {/* Content (Right) */}
-                <div className="group">
-                   <div className="md:hidden text-gold font-mono text-sm mb-1">{item.year}</div>
-                   <div className="flex items-center gap-2 mb-2">
-                     <div className="p-1.5 bg-white/5 rounded-full text-gold/80 group-hover:text-gold transition-colors">
-                       {item.icon}
-                     </div>
-                     <h3 className="text-xl font-medium text-white group-hover:text-gold transition-colors">{item.title}</h3>
-                   </div>
-                   <p className="text-sm text-white/50 mb-2 uppercase tracking-wide">{item.subtitle}</p>
-                   <p className="text-white/70 leading-relaxed font-light">{item.description}</p>
+                {/* Icon */}
+                <div
+                  className="flex-shrink-0 w-8 h-8 border-2 flex items-center justify-center"
+                  style={{ borderColor: colorMap[item.color], color: colorMap[item.color] }}
+                >
+                  {item.icon}
+                </div>
+
+                {/* Content */}
+                <div>
+                  <h4 className="font-display font-bold text-white text-lg leading-tight mb-1">
+                    {item.title}
+                  </h4>
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-white/40 mb-2">
+                    {item.subtitle}
+                  </p>
+                  <p className="font-body text-white/60 text-sm leading-relaxed">
+                    {item.description}
+                  </p>
                 </div>
               </div>
             ))}
@@ -185,12 +257,16 @@ const About = () => {
   );
 };
 
-// Helper Icons
 const GlobeIcon = () => (
-<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>
+  </svg>
 );
+
 const UsersIcon = () => (
-<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+  </svg>
 );
 
 export default About;
