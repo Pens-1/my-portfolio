@@ -1,80 +1,77 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+const NAV_ITEMS = [
+  { id: 'home', label: 'Home', num: '01' },
+  { id: 'works', label: 'Works', num: '02' },
+  { id: 'about', label: 'About', num: '03' },
+  { id: 'contact', label: 'Contact', num: '04' },
+];
 
 const Navigation = () => {
-  const [activeSection, setActiveSection] = useState('home');
+  const [active, setActive] = useState('home');
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['home', 'works', 'about', 'contact'];
-      const scrollPosition = window.scrollY + window.innerHeight / 2;
-
-      setScrolled(window.scrollY > 50);
-
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const { offsetTop, offsetHeight } = element;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section);
-            break;
-          }
+    const onScroll = () => {
+      setScrolled(window.scrollY > 40);
+      const pos = window.scrollY + window.innerHeight * 0.35;
+      for (const { id } of NAV_ITEMS) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        if (pos >= el.offsetTop && pos < el.offsetTop + el.offsetHeight) {
+          setActive(id);
+          break;
         }
       }
     };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+  const go = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
-
-  const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'works', label: 'Works' },
-    { id: 'about', label: 'About' },
-    { id: 'contact', label: 'Contact' },
-  ];
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 border-b-2 transition-all duration-300 ${
-        scrolled
-          ? 'bg-neo-black/95 backdrop-blur-sm border-neo-yellow/30'
-          : 'bg-neo-black/80 backdrop-blur-sm border-white/10'
+      aria-label="Primary"
+      className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
+        scrolled ? 'backdrop-blur-md bg-ink/70 border-b border-border' : 'bg-transparent border-b border-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-8 py-4">
-        <div className="flex justify-between items-center">
-          <button
-            onClick={() => scrollToSection('home')}
-            className="font-display font-black text-lg tracking-widest text-neo-yellow hover:text-white transition-colors uppercase"
-          >
-            PORTFOLIO<span className="text-neo-pink">.</span>
-          </button>
+      <div className="container-wide flex items-center justify-between py-5">
+        <button
+          onClick={() => go('home')}
+          className="font-mono text-xs tracking-[0.2em] text-fg hover:text-accent transition-colors"
+        >
+          YAMAMOTO<span className="text-accent">.</span>
+        </button>
 
-          <ul className="flex gap-1">
-            {navItems.map((item) => (
-              <li key={item.id}>
-                <button
-                  onClick={() => scrollToSection(item.id)}
-                  className={`font-mono text-xs tracking-widest px-4 py-2 uppercase border-2 transition-all duration-150 ${
-                    activeSection === item.id
-                      ? 'bg-neo-yellow text-neo-black border-neo-yellow font-bold'
-                      : 'text-white/60 border-transparent hover:border-white/20 hover:text-white'
-                  }`}
-                >
-                  {item.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ul className="hidden md:flex items-center gap-1">
+          {NAV_ITEMS.map(({ id, label, num }) => (
+            <li key={id}>
+              <button
+                onClick={() => go(id)}
+                className={`group flex items-center gap-2 px-3 py-2 font-mono text-[11px] tracking-[0.15em] uppercase transition-colors ${
+                  active === id ? 'text-accent' : 'text-fg-muted hover:text-fg'
+                }`}
+              >
+                <span className="text-accent/60">{num}.</span>
+                {label}
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        <a
+          href="https://github.com/Pens-1"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden md:inline-flex font-mono text-[11px] tracking-[0.15em] uppercase border border-accent/50 text-accent px-3 py-2 hover:bg-accent-dim transition-colors"
+        >
+          GitHub ↗
+        </a>
       </div>
     </nav>
   );

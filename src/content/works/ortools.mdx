@@ -1,0 +1,28 @@
+---
+id: 11
+slug: "ortools-scheduling"
+title: "OR-Tools Schedule Optimizer"
+subtitle: "Constraint-based schedule module verifier"
+group: "ml"
+year: "2025.11"
+description: "Google OR-Tools を使って複雑な制約(優先順位・人員・時間帯)を満たすスケジュールを生成するモジュール。制約充足問題としての定式化と検証がスコープ。"
+technologies: ["Python", "OR-Tools", "Constraint Programming"]
+githubUrl: "https://github.com/Pens-1/ortools-scheduling-verify"
+repoVisibility: "public"
+---
+
+## Overview
+
+OR-Tools(CP-SAT ソルバ)を使い、現実のスケジューリング要件(優先順位・最大稼働・休憩・スキルマッチ)を制約として書き下し、実行可能解が存在するか/最適解はどれかを調べるモジュール。
+
+## Why constraint programming
+
+- ヒューリスティックでは最適性の証明が難しい
+- 強化学習ほどの学習コストを払うべきでない規模
+- 「制約の追加で解がどう変わるか」を可視化できるのが現場に強い
+
+## What's verified
+
+- 制約の組合せが infeasible になるケースの検出
+- ソフト制約のペナルティ重みを振ったときの解の安定性
+- 入力規模をスケールさせたときの計算時間カーブ

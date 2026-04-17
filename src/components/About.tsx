@@ -1,272 +1,177 @@
-import { useEffect, useRef, useState } from 'react';
-import { Code2, Cpu, Database, Github, GraduationCap, Trophy } from 'lucide-react';
+import { Github } from 'lucide-react';
+
+const LAYERS = [
+  {
+    name: 'Hardware',
+    items: ['ESP32', 'nRF52840', 'PMW3610 (SPI)', 'PlatformIO', 'KiCad (Python-gen)'],
+  },
+  {
+    name: 'Embedded',
+    items: ['C/C++', 'Arduino framework', 'BLE', 'WiFi / raw HTTP'],
+  },
+  {
+    name: 'Backend',
+    items: ['Python', 'FastAPI', 'Flask', 'PostgreSQL', 'Alembic', 'Docker'],
+  },
+  {
+    name: 'ML / Automation',
+    items: ['PyTorch', 'Stable-Baselines3 (PPO)', 'OR-Tools', 'Playwright', 'Ollama / local LLM', 'MCP Protocol'],
+  },
+  {
+    name: 'Frontend',
+    items: ['TypeScript', 'React', 'Next.js', 'Tailwind CSS', 'Vite'],
+  },
+  {
+    name: 'Infra',
+    items: ['Cloudflare Workers', 'Cloudflare Tunnel', 'Nginx', 'OpenMediaVault (SMB)', 'n8n', 'Self-hosted GPU'],
+  },
+];
+
+const TIMELINE = [
+  {
+    year: 'Now',
+    title: 'Freelance · Running GradeS',
+    description:
+      'CrowdWorks で継続受託。並行して grades.fullweak.com を運用(リリース1週間で 1,200+ ユーザー / 60K 検索)。',
+  },
+  {
+    year: '2025',
+    title: 'Track Job Hackathon — Team Lead',
+    description:
+      'ハッカソンに参加しチームを牽引。短期プロトタイプとプレゼンの両輪を回す役割。',
+  },
+  {
+    year: '2025',
+    title: 'Joined Student Dev Ecosystem',
+    description: '学生エンジニアコミュニティに参加。モダンな開発フローとチーム開発のベストプラクティスを実戦投入。',
+  },
+  {
+    year: '2024',
+    title: 'Vancouver — Global Experience',
+    description: '語学留学。異文化環境での突破力と、英語での技術ドキュメント読解を獲得。',
+  },
+];
+
+const CLIENT_WORK = [
+  'Google 検索結果の自動収集システム(継続依頼)',
+  'Gemini API による自動リスト生成システム',
+  'メールアドレス存在確認ツール(SMTP 検証、1,000件一括)',
+  'ワンクリック・スクリーンショット → クラウド自動保存(Go)',
+  '生成 AI を用いた時系列データ分析環境',
+  'Microsoft Graph API × GAS でデバイスデータ取得',
+  'LLM アプリケーション開発支援',
+];
 
 const About = () => {
-  const [visibleSections, setVisibleSections] = useState<string[]>([]);
-  const sectionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = entry.target.getAttribute('data-section');
-            if (id) setVisibleSections((prev) => [...new Set([...prev, id])]);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    Object.values(sectionRefs.current).forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  const isVisible = (id: string) => visibleSections.includes(id);
-
-  const timeline = [
-    {
-      year: '2024.08',
-      title: 'Global Experience in Canada',
-      subtitle: 'Vancouver, Canada',
-      description: '語学留学を経験。異文化環境でのコミュニケーション能力と、多様な価値観への適応力を習得。',
-      icon: <GlobeIcon />,
-      color: 'neo-yellow',
-    },
-    {
-      year: '2025.04',
-      title: 'Joined Student Dev Ecosystem',
-      subtitle: 'Tokyo, Japan',
-      description: '学生開発コミュニティに参加。チーム開発のベストプラクティスとモダンな開発フローを実践的に学習。',
-      icon: <UsersIcon />,
-      color: 'neo-pink',
-    },
-    {
-      year: '2025.08',
-      title: "Track Job Beginner's Hackathon",
-      subtitle: 'Team Leader',
-      description: 'ハッカソンに参加し、リーダーとしてチームを牽引。短期間でのプロトタイプ開発とプレゼンテーションを実施。',
-      icon: <Trophy className="w-4 h-4" />,
-      color: 'neo-green',
-    },
-    {
-      year: 'Present',
-      title: 'Continuing Education & Dev',
-      subtitle: 'University / Personal Projects',
-      description: '大学での研究に加え、個人開発でAI統合アプリケーションや業務効率化ツールを継続的に開発中。',
-      icon: <GraduationCap className="w-4 h-4" />,
-      color: 'neo-blue',
-    },
-  ];
-
-  const skillCategories = [
-    {
-      title: 'Languages',
-      icon: <Code2 className="w-4 h-4" />,
-      color: 'neo-yellow',
-      skills: ['Python', 'TypeScript', 'JavaScript', 'SQL (PostgreSQL)', 'HTML5/CSS3'],
-    },
-    {
-      title: 'Frameworks',
-      icon: <Cpu className="w-4 h-4" />,
-      color: 'neo-pink',
-      skills: ['React', 'Next.js', 'FastAPI', 'Flask', 'Pandas', 'Selenium', 'Playwright'],
-    },
-    {
-      title: 'Infra & Tools',
-      icon: <Database className="w-4 h-4" />,
-      color: 'neo-green',
-      skills: ['Docker', 'Git / GitHub', 'Linux (Ubuntu)', 'VS Code', 'Vercel'],
-    },
-  ];
-
-  const colorMap: Record<string, string> = {
-    'neo-yellow': '#FBFF48',
-    'neo-pink': '#FF70A6',
-    'neo-green': '#33FF57',
-    'neo-blue': '#3B82F6',
-  };
-
   return (
-    <section id="about" className="relative min-h-screen bg-neo-black py-32 px-8 overflow-hidden">
-      <span className="section-num">03</span>
-
-      <div className="max-w-6xl mx-auto">
-
-        {/* Header */}
-        <div className="mb-20">
-          <div className="font-mono text-neo-green/60 text-xs uppercase tracking-[0.3em] mb-3">
-            &gt; Background / Skills
-          </div>
-          <h2
-            className="font-display font-black text-white leading-none"
-            style={{ fontSize: 'clamp(2.5rem, 7vw, 6rem)' }}
-          >
-            ABOUT<br />
-            <span className="text-neo-green">ME</span>
+    <section id="about" className="py-28 md:py-36 border-t border-border">
+      <div className="container-prose">
+        <header className="mb-14">
+          <div className="eyebrow mb-3">03. About</div>
+          <h2 className="font-display text-display-lg text-fg mb-4">
+            Background.
           </h2>
-          <div className="mt-6 w-16 h-1 bg-neo-green" />
-        </div>
+        </header>
 
         {/* Intro */}
-        <div
-          ref={(el) => (sectionRefs.current['intro'] = el)}
-          data-section="intro"
-          className={`mb-16 max-w-2xl border-l-4 border-neo-green pl-6 transition-all duration-700 ${
-            isVisible('intro') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-          }`}
-        >
-          <p className="text-white/70 font-body text-lg leading-relaxed mb-6">
-            「自動化」と「最適化」に情熱を注ぐエンジニア。<br />
-            単調な作業をプログラムに任せ、人間がより創造的な活動に集中できる世界を目指しています。
+        <div className="prose-readable max-w-3xl mb-16">
+          <p className="text-fg text-lg leading-relaxed mb-5">
+            回路基板から本番 Web サービスまで、<span className="text-accent">全部一人で通せる</span>エンジニアを目指している。
+          </p>
+          <p className="text-fg-muted leading-relaxed mb-5">
+            Python 中心の自動化・AI 駆動開発が主戦場。
+            最近は ESP32 ファームウェアと自作ワイヤレスキーボードの PCB 自動生成、
+            ローカル LLM を使ったブラウザエージェントなど、
+            レイヤーを跨いだ実装を続けている。
+          </p>
+          <p className="text-fg-muted leading-relaxed">
+            「単調な作業をプログラムに任せ、人間が創造的な活動に集中できる状態」を作ることに
+            一番興味がある。だから成果物は手元の時間を取り戻すツールか、他人の時間を取り戻すプロダクトになりがち。
           </p>
           <a
             href="https://github.com/Pens-1"
             target="_blank"
             rel="noopener noreferrer"
-            className="neo-btn inline-flex border-2 border-neo-green text-neo-green bg-transparent shadow-[4px_4px_0_#33FF57] hover:shadow-[1px_1px_0_#33FF57] hover:translate-x-[3px] hover:translate-y-[3px] transition-all duration-100"
+            className="mt-8 inline-flex items-center gap-2 border border-border-strong text-fg px-4 py-2 text-sm hover:border-accent hover:text-accent transition-colors"
           >
             <Github className="w-4 h-4" />
-            GitHub Profile
+            GitHub / Pens-1
           </a>
         </div>
 
-        {/* Skill Cards */}
-        <div
-          ref={(el) => (sectionRefs.current['skills'] = el)}
-          data-section="skills"
-          className={`grid md:grid-cols-3 gap-5 mb-8 transition-all duration-700 delay-100 ${
-            isVisible('skills') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          {skillCategories.map((cat, i) => (
-            <div
-              key={i}
-              className="border-2 bg-neo-black p-6"
-              style={{
-                borderColor: colorMap[cat.color],
-                boxShadow: `5px 5px 0 ${colorMap[cat.color]}`,
-              }}
-            >
-              <div className="flex items-center gap-2 mb-5" style={{ color: colorMap[cat.color] }}>
-                {cat.icon}
-                <span className="font-mono text-xs uppercase tracking-widest">{cat.title}</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {cat.skills.map((skill, j) => (
-                  <span
-                    key={j}
-                    className="font-mono text-[10px] text-white/60 bg-white/5 px-2 py-1 border border-white/10 uppercase tracking-wider"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Qualification */}
-        <div
-          className={`mb-24 transition-all duration-700 delay-200 ${
-            isVisible('skills') ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <span className="font-mono text-xs text-neo-green/70 uppercase tracking-widest mr-3">
-            Qualification
-          </span>
-          <span className="font-body text-white/50 text-sm">
-            Python 3 Engineering Certification (Basic)
-          </span>
-        </div>
-
-        {/* Timeline */}
-        <div
-          ref={(el) => (sectionRefs.current['timeline'] = el)}
-          data-section="timeline"
-          className={`transition-all duration-700 delay-150 ${
-            isVisible('timeline') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <div className="font-mono text-neo-green/60 text-xs uppercase tracking-[0.3em] mb-3">
-            &gt; Career Journey
-          </div>
-          <h3
-            className="font-display font-black text-white mb-12"
-            style={{ fontSize: 'clamp(2rem, 5vw, 4rem)' }}
-          >
-            JOURNEY
-          </h3>
-
-          <div className="space-y-8">
-            {timeline.map((item, index) => (
+        {/* Skills as Layers */}
+        <div className="mb-20">
+          <div className="eyebrow mb-4">Stack, by layer</div>
+          <div className="border border-border">
+            {LAYERS.map((l, i) => (
               <div
-                key={index}
-                className="flex gap-6 border-2 border-white/10 p-6 transition-all duration-200 hover:border-opacity-100"
-                style={{
-                  ['--hover-color' as string]: colorMap[item.color],
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.borderColor = colorMap[item.color];
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = `4px 4px 0 ${colorMap[item.color]}`;
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.1)';
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = 'none';
-                }}
+                key={l.name}
+                className={`grid grid-cols-12 gap-4 px-5 py-4 ${
+                  i !== LAYERS.length - 1 ? 'border-b border-border' : ''
+                }`}
               >
-                {/* Year */}
-                <div className="flex-shrink-0 w-24">
-                  <span
-                    className="font-mono text-sm font-bold"
-                    style={{ color: colorMap[item.color] }}
-                  >
-                    {item.year}
-                  </span>
+                <div className="col-span-12 md:col-span-3">
+                  <div className="font-display font-semibold text-fg">{l.name}</div>
                 </div>
-
-                {/* Icon */}
-                <div
-                  className="flex-shrink-0 w-8 h-8 border-2 flex items-center justify-center"
-                  style={{ borderColor: colorMap[item.color], color: colorMap[item.color] }}
-                >
-                  {item.icon}
-                </div>
-
-                {/* Content */}
-                <div>
-                  <h4 className="font-display font-bold text-white text-lg leading-tight mb-1">
-                    {item.title}
-                  </h4>
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-white/40 mb-2">
-                    {item.subtitle}
-                  </p>
-                  <p className="font-body text-white/60 text-sm leading-relaxed">
-                    {item.description}
-                  </p>
+                <div className="col-span-12 md:col-span-9 flex flex-wrap gap-x-2 gap-y-1">
+                  {l.items.map((it, j) => (
+                    <span key={it} className="font-mono text-[12px] text-fg-muted">
+                      {it}
+                      {j < l.items.length - 1 && <span className="text-fg-faint ml-2">·</span>}
+                    </span>
+                  ))}
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Timeline */}
+        <div className="mb-20">
+          <div className="eyebrow mb-4">Journey</div>
+          <ol className="border-l border-border-strong pl-6 space-y-8">
+            {TIMELINE.map((t, i) => (
+              <li key={i} className="relative">
+                <span className="absolute -left-[29px] top-1.5 w-2.5 h-2.5 rounded-full bg-accent" />
+                <div className="font-mono text-[11px] text-fg-faint uppercase tracking-[0.15em] mb-1">
+                  {t.year}
+                </div>
+                <h3 className="font-display font-semibold text-fg mb-1.5">{t.title}</h3>
+                <p className="text-fg-muted text-sm leading-relaxed max-w-2xl">
+                  {t.description}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        {/* Client Work */}
+        <div>
+          <div className="eyebrow mb-4">Client work · CrowdWorks</div>
+          <h3 className="font-display text-xl font-semibold text-fg mb-3">
+            受託実績の抜粋
+          </h3>
+          <p className="text-fg-muted text-sm mb-5 max-w-2xl">
+            自動化・Web アプリ・AI 統合を軸に継続受託しています。以下は納品済みの案件の一部。
+          </p>
+          <ul className="space-y-2">
+            {CLIENT_WORK.map((c, i) => (
+              <li
+                key={i}
+                className="flex items-start gap-3 font-mono text-sm text-fg-muted"
+              >
+                <span className="text-accent mt-0.5">◦</span>
+                <span>{c}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-5 font-mono text-[11px] text-fg-faint">
+            Qualification: Python 3 Engineering Certification (Basic)
           </div>
         </div>
       </div>
     </section>
   );
 };
-
-const GlobeIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>
-  </svg>
-);
-
-const UsersIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-  </svg>
-);
 
 export default About;

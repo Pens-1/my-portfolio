@@ -1,0 +1,45 @@
+---
+id: 9
+slug: "nou-ai"
+title: "能の練習スケジュール生成 AI"
+subtitle: "Scene-based schedule generator trained with PPO reinforcement learning"
+group: "ml"
+year: "2025.09"
+description: "能の練習表作成を強化学習(PPO)で解く。従来の「人を割り当てる」設計を「場面を割り当てる」設計に置き換え、動的に変わる部屋数・人数・時間帯へ対応させた。"
+technologies: ["Python", "PyTorch", "Stable-Baselines3", "PPO", "Gymnasium", "Reinforcement Learning"]
+repoVisibility: "private"
+---
+
+## Overview
+
+能(伝統芸能)の練習スケジュールを自動生成するエージェント。PPO で学習した方策が、動的に変わる部屋・人数・時間帯の条件下で、役柄(シテ/ワキ/地謡/楽器)の練習場面を割り付ける。
+
+## Why scene-based
+
+従来の「人に部屋と時間を割り当てる」定式化は、動的環境(人数・部屋数が毎エピソード変わる)で状態空間が爆発していた。「場面に部屋と時間を割り当てる」設計に変更することで:
+
+- 状態空間が人数に依存しなくなる
+- 動的な範囲 (`people: 50〜60`, `rooms: 5〜8`, `scenes: 16〜20`) を素直に扱える
+
+## Training setup
+
+```yaml
+policy:          MultiInputPolicy
+learning_rate:   0.0003
+total_timesteps: 20,000,000
+n_steps:         512
+batch_size:      2048
+n_envs:          32
+device:          cuda
+```
+
+ネットワーク: policy/value ともに `[256, 128]`。
+
+## Design tradeoffs
+
+- **制約を段階的に緩和/強化**: 監督者制約・設備制約を独立にオンオフできる構造にして、カリキュラム学習を組めるようにした
+- **固定シード**: 再現性のため `seed: 45` で固定
+
+## Status
+
+研究開発中。現実の運用者インタビュー → 制約見直しの段階。

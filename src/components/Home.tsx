@@ -1,119 +1,112 @@
-import { ChevronDown } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { ArrowRight, Github, Mail } from 'lucide-react';
 
-const MARQUEE_ITEMS = [
-  'Python', 'React', 'TypeScript', 'Docker', 'FastAPI',
-  'PostgreSQL', 'Automation', 'AI Integration', 'Pandas', 'Playwright',
+const METRICS = [
+  { value: '60K', label: 'searches' },
+  { value: '1,200+', label: 'users' },
+  { value: '25,670', label: 'records' },
+];
+
+const STACK = [
+  'Hardware (ESP32, nRF52840, KiCad)',
+  'Embedded C/C++',
+  'Python · FastAPI · PostgreSQL',
+  'TypeScript · React · Next.js',
+  'Local LLM · Playwright · Docker',
+  'ML (PPO, 数理最適化)',
 ];
 
 const Home = () => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const t = setTimeout(() => setIsVisible(true), 100);
-    return () => clearTimeout(t);
-  }, []);
-
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center grid-bg overflow-hidden"
+      className="relative min-h-[92vh] flex items-center pt-32 pb-24"
     >
-      {/* Status badge */}
-      <div
-        className={`absolute top-24 right-8 z-10 transition-all duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
-      >
-        <div className="flex items-center gap-2 border-2 border-neo-green px-3 py-1.5 shadow-[3px_3px_0_#33FF57] bg-neo-black">
-          <span className="w-2 h-2 bg-neo-green rounded-full animate-pulse inline-block" />
-          <span className="font-mono text-neo-green text-xs uppercase tracking-widest">Available</span>
-        </div>
-      </div>
-
-      {/* Main content */}
-      <div className="relative z-10 px-8 max-w-6xl mx-auto w-full pb-20">
-        {/* Intro line */}
-        <div
-          className={`mb-4 font-mono text-neo-yellow/60 text-sm uppercase tracking-[0.3em] transition-all duration-700 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
-        >
-          &gt; Full-Stack Engineer / Automation Specialist
-        </div>
-
-        {/* Heading */}
-        <h1
-          className={`font-display font-black leading-[0.9] mb-8 transition-all duration-700 delay-100 glitch ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-          }`}
-          data-text="FULL-STACK AUTOMATION ENGINEER"
-        >
-          <span className="block text-white" style={{ fontSize: 'clamp(3.5rem, 10vw, 8rem)' }}>FULL-</span>
-          <span className="block text-white" style={{ fontSize: 'clamp(3.5rem, 10vw, 8rem)' }}>STACK</span>
-          <span className="block text-neo-yellow" style={{ fontSize: 'clamp(3.5rem, 10vw, 8rem)' }}>ENGINEER</span>
-        </h1>
-
-        {/* Description */}
-        <p
-          className={`text-white/70 font-body text-base md:text-lg max-w-md mb-8 border-l-4 border-neo-pink pl-4 leading-relaxed transition-all duration-700 delay-200 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
-        >
-          Building robust systems that save time and empower decisions.<br />
-          Specializing in Data Processing, Web Development, and AI Integration.
+      <div className="container-prose">
+        <p className="eyebrow mb-6 animate-fade-in">
+          <span aria-hidden="true" className="mr-1">◆</span>
+          Available for select freelance work
         </p>
 
-        {/* Tech tags */}
-        <div
-          className={`flex flex-wrap gap-3 mb-10 transition-all duration-700 delay-300 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
+        <h1
+          className="font-display text-display-xl text-fg mb-8 animate-fade-up"
+          style={{ animationDelay: '80ms' }}
         >
-          {['Python', 'React', 'Docker', 'AI / Automation'].map((tech) => (
-            <span key={tech} className="neo-tag text-neo-yellow border-neo-yellow">
-              {tech}
-            </span>
+          Engineer who ships <br className="hidden sm:block" />
+          products people <span className="text-accent">actually use</span>.
+        </h1>
+
+        <p
+          className="text-fg-muted text-lg md:text-xl max-w-2xl leading-relaxed mb-8 animate-fade-up"
+          style={{ animationDelay: '160ms' }}
+        >
+          I build across the stack — from{' '}
+          <span className="text-fg">ESP32 firmware</span> to{' '}
+          <span className="text-fg">production web services</span>.
+          Currently running <a href="https://grades.fullweak.com" target="_blank" rel="noopener noreferrer" className="link-accent">GradeS</a>,
+          a grade database for Doshisha University students,
+          and taking on freelance work on CrowdWorks.
+        </p>
+
+        {/* Metric strip */}
+        <div
+          className="grid grid-cols-3 gap-px bg-border border border-border mb-10 animate-fade-up"
+          style={{ animationDelay: '240ms' }}
+          aria-label="GradeS early traction metrics"
+        >
+          {METRICS.map((m) => (
+            <div key={m.label} className="bg-ink px-5 py-5 md:px-7 md:py-6">
+              <div className="font-display text-2xl md:text-3xl font-semibold text-fg tabular-nums">
+                {m.value}
+              </div>
+              <div className="font-mono text-[10px] md:text-xs uppercase tracking-[0.15em] text-fg-faint mt-1">
+                {m.label}
+              </div>
+            </div>
           ))}
         </div>
+        <p className="font-mono text-[11px] text-fg-faint -mt-8 mb-10">
+          GradeS — first week after launch (2026.03)
+        </p>
 
         {/* CTAs */}
-        <div
-          className={`flex flex-wrap gap-4 transition-all duration-700 delay-[400ms] ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
-        >
-          <a href="#works" className="neo-btn neo-btn-yellow">
-            View Works
-            <ChevronDown className="w-4 h-4 rotate-[-90deg]" />
+        <div className="flex flex-wrap items-center gap-4 mb-16 animate-fade-up" style={{ animationDelay: '320ms' }}>
+          <a
+            href="#works"
+            className="group inline-flex items-center gap-2 bg-accent text-ink font-medium px-6 py-3 text-sm transition-transform hover:-translate-y-0.5"
+          >
+            View work
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
           </a>
           <a
             href="https://github.com/Pens-1"
             target="_blank"
             rel="noopener noreferrer"
-            className="neo-btn neo-btn-outline"
+            className="inline-flex items-center gap-2 border border-border-strong text-fg px-6 py-3 text-sm hover:border-accent hover:text-accent transition-colors"
           >
+            <Github className="w-4 h-4" />
             GitHub
           </a>
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-2 text-fg-muted px-2 py-3 text-sm hover:text-accent transition-colors"
+          >
+            <Mail className="w-4 h-4" />
+            Contact
+          </a>
         </div>
-      </div>
 
-      {/* Marquee strip */}
-      <div className="absolute bottom-0 left-0 right-0 border-t-2 border-neo-yellow/20 bg-neo-black/80">
-        <div className="marquee-wrapper py-3">
-          <div className="marquee-track">
-            {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
-              <span key={i} className="mx-10 font-mono text-xs text-neo-yellow/50 uppercase tracking-widest whitespace-nowrap">
-                {item}
-                <span className="text-neo-pink mx-4">✦</span>
-              </span>
+        {/* Stack list */}
+        <div className="animate-fade-up" style={{ animationDelay: '400ms' }}>
+          <div className="eyebrow mb-3">Stack</div>
+          <ul className="space-y-1.5 font-mono text-[13px] text-fg-muted">
+            {STACK.map((s) => (
+              <li key={s} className="flex items-start gap-3">
+                <span className="text-accent/70 mt-0.5">—</span>
+                <span>{s}</span>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-        <span className="font-mono text-[10px] tracking-widest text-white/30 uppercase">Scroll</span>
-        <ChevronDown className="w-5 h-5 text-neo-yellow/50 animate-bounce" />
       </div>
     </section>
   );

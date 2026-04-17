@@ -1,0 +1,49 @@
+---
+id: 1
+slug: "grades"
+title: "GradeS"
+subtitle: "Grade database for Doshisha University students"
+group: "live"
+year: "2026.03"
+featured: true
+description: "同志社大学の成績分布・GPA・F率・難易度分類を検索できる公開サービス。2020〜2025年の講義データ25,670件を格納。リリース1週間で検索60,000回・1,200人超が利用。"
+technologies: ["Next.js", "TypeScript", "Python", "FastAPI", "PostgreSQL", "Cloudflare Workers", "Nginx", "Docker", "Playwright"]
+demoUrl: "https://grades.fullweak.com"
+repoVisibility: "private"
+metrics:
+  - label: "searches (1 week)"
+    value: "60,000"
+  - label: "users (1 week)"
+    value: "1,200+"
+  - label: "course records"
+    value: "25,670"
+---
+
+## Overview
+
+同志社大学の学生が履修登録で直面する「情報の非対称性」を解消するために作った公開サービス。GPA・A率・F率・成績分布を多面的に検索でき、講義を「鬼門型／修行型／ボーナス型」などに分類して一覧できる。
+
+## Traction
+
+リリースから1週間で:
+- **検索回数: 60,000**
+- **ユニークユーザー: 1,200+**
+- **格納データ: 25,670件**(2020〜2025年の講義成績)
+
+## Architecture
+
+- **Frontend**: Next.js + TypeScript。検索は Cloudflare Workers を前段に置いて低レイテンシ化
+- **Backend**: FastAPI + PostgreSQL、Docker Composeで構成
+- **Data pipeline**: Playwrightで大学の履修要項PDF/HTMLから成績データをスクレイピング、正規化してDBに投入
+- **Hosting**: 自宅サーバー + Cloudflare Tunnel。コストはドメイン代のみ
+
+## Testing
+
+- pytest: APIテスト27件(サーバー不要のTestClientベース)
+- Playwright: GUI結合テスト14件(サーバー自動起動)
+- commit前に全件通過を必須化
+
+## What I learned
+
+- **エッジキャッシュ戦略**: 検索クエリの分布が偏るため、Workers側で上位クエリを積極的にキャッシュすると体感レイテンシが2桁変わる
+- **スクレイパーの冪等性**: 大学サイトの軽微なHTML変更で崩れないよう、構造ではなくラベルテキスト基準で取得する構造に最終的に落ち着いた

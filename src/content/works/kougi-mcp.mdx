@@ -1,0 +1,36 @@
+---
+id: 6
+slug: "kougi-mcp"
+title: "kougi-mcp"
+subtitle: "On-demand lecture video → transcript + slide pipeline over a home NAS"
+group: "automation"
+year: "2026.04"
+description: "Panopto のオンデマンド講義を自宅 NAS に集約し、faster-whisper で文字起こし、OpenCV でスライド変化を検出する MCP サーバー。"
+technologies: ["Python", "MCP", "faster-whisper", "OpenCV", "ffmpeg", "SMB/NAS"]
+repoVisibility: "private"
+---
+
+## Overview
+
+大学のオンデマンド講義(Panopto)を自宅 NAS に集約し、文字起こし・スライド抽出・ノート生成までを自動化する MCP サーバー。
+
+## Pipeline
+
+1. **ダウンロード**: Panopto は Playwright ログインが不安定だったため、**Chrome (claude-in-chrome 拡張)で認証済みセッションを得た後 ffmpeg で HLS を取得** する二段構え
+2. **文字起こし**: faster-whisper で字幕生成
+3. **スライド抽出**: OpenCV で画面変化を検出して静止画を吐き出す
+4. **MCP 公開**: 8ツールを FastMCP でラップ、LLM クライアントから叩ける
+
+## NAS layout
+
+```
+SMB mount: //openmediavault/host1 → /mnt/nas
+lectures : /mnt/nas/media/school/{semester}/{subject}/
+```
+
+環境変数 `KOUGI_NAS_PATH` で上書き可能。
+
+## Tradeoff notes
+
+- Panopto の Playwright 直接ログインに何度も失敗 → 技術的に美しくなくても、動く方式(Chrome+ffmpeg)を受け入れた
+- `faster-whisper` は GPU があれば実時間の数倍速で回るので、夜間にバッチ実行

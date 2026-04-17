@@ -1,33 +1,17 @@
-import { useState, useEffect, useRef } from 'react';
-import { Github, Mail, Send, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { useState } from 'react';
+import { Github, Mail, Send, Loader2, CheckCircle, AlertCircle, ArrowUpRight } from 'lucide-react';
+
+type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  });
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.1 }
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [status, setStatus] = useState<Status>('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('submitting');
 
     const webhookUrl = import.meta.env.VITE_DISCORD_WEBHOOK_URL;
-
     if (!webhookUrl) {
       setStatus('error');
       return;
@@ -38,7 +22,7 @@ const Contact = () => {
         embeds: [
           {
             title: 'New Contact Form Submission',
-            color: 0xfbff48,
+            color: 0x7cf7d6,
             fields: [
               { name: 'Name', value: formData.name, inline: true },
               { name: 'Email', value: formData.email, inline: true },
@@ -59,7 +43,7 @@ const Contact = () => {
         setStatus('success');
         setFormData({ name: '', email: '', message: '' });
       } else {
-        throw new Error('Failed to send message');
+        throw new Error('Failed to send');
       }
     } catch {
       setStatus('error');
@@ -70,154 +54,127 @@ const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const socialLinks = [
-    { icon: Github, label: 'GitHub', href: 'https://github.com/Pens-1' },
-    { icon: Mail, label: 'Email', href: 'mailto:contact@example.com' },
-  ];
-
   const inputClass =
-    'w-full bg-neo-black border-2 border-white/20 px-4 py-4 text-white font-body placeholder-white/30 focus:border-neo-blue focus:outline-none transition-colors duration-200 focus:shadow-[4px_4px_0_#3B82F6]';
+    'w-full bg-transparent border border-border px-4 py-3 text-fg placeholder-fg-faint font-sans text-sm focus:border-accent focus:outline-none transition-colors';
 
   return (
-    <section
-      id="contact"
-      ref={sectionRef}
-      className="relative min-h-screen bg-neo-black py-32 px-8 overflow-hidden grid-bg"
-    >
-      <span className="section-num">04</span>
-
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div
-          className={`mb-20 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-        >
-          <div className="font-mono text-neo-blue/60 text-xs uppercase tracking-[0.3em] mb-3">
-            &gt; Let's work together
-          </div>
-          <h2
-            className="font-display font-black text-white leading-none"
-            style={{ fontSize: 'clamp(2.5rem, 7vw, 6rem)' }}
-          >
-            GET IN<br />
-            <span className="text-neo-blue">TOUCH</span>
+    <section id="contact" className="py-28 md:py-36 border-t border-border">
+      <div className="container-prose">
+        <header className="mb-12">
+          <div className="eyebrow mb-3">04. Contact</div>
+          <h2 className="font-display text-display-lg text-fg mb-4">
+            Get in touch.
           </h2>
-          <div className="mt-6 w-16 h-1 bg-neo-blue" />
-          <p className="mt-6 text-white/50 font-body max-w-lg">
-            業務自動化やデータ処理システムのご相談、協業のお誘いをお待ちしています。
-            ご都合にあわせて、柔軟に調整可能です。
+          <p className="text-fg-muted max-w-xl">
+            業務自動化・データ処理・AI 統合システムの開発相談、フリーランス案件の打診、
+            協業の声かけ、どれでも歓迎します。
           </p>
-        </div>
+        </header>
 
-        {/* Form */}
-        <div
-          className={`transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-        >
-          {status === 'success' ? (
-            <div className="border-2 border-neo-green p-12 text-center shadow-[6px_6px_0_#33FF57]">
-              <CheckCircle className="w-14 h-14 text-neo-green mx-auto mb-6" />
-              <h3 className="font-display font-black text-2xl text-white mb-3">MESSAGE SENT!</h3>
-              <p className="text-white/60 font-body mb-8">
-                お問い合わせありがとうございます。確認次第、ご連絡いたします。
-              </p>
-              <button
-                onClick={() => setStatus('idle')}
-                className="font-mono text-xs text-neo-green uppercase tracking-widest hover:underline underline-offset-4"
-              >
-                Send another message
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid md:grid-cols-2 gap-5">
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Name"
-                  required
-                  disabled={status === 'submitting'}
-                  className={inputClass}
-                />
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Email"
-                  required
-                  disabled={status === 'submitting'}
-                  className={inputClass}
-                />
-              </div>
-
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                placeholder="Message"
-                required
-                rows={7}
-                disabled={status === 'submitting'}
-                className={`${inputClass} resize-none`}
-              />
-
-              {status === 'error' && (
-                <div className="flex items-center gap-2 text-neo-pink font-mono text-xs border-2 border-neo-pink p-4">
-                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                  <span>送信に失敗しました。時間をおいて再度お試しいただくか、GitHub経由でご連絡ください。</span>
-                </div>
-              )}
-
-              <div>
-                <button
-                  type="submit"
-                  disabled={status === 'submitting'}
-                  className="neo-btn border-2 border-neo-blue text-neo-blue bg-transparent shadow-[5px_5px_0_#3B82F6] hover:shadow-[1px_1px_0_#3B82F6] hover:translate-x-[4px] hover:translate-y-[4px] transition-all duration-100 disabled:opacity-50 disabled:pointer-events-none"
-                >
-                  {status === 'submitting' ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      Send Message
-                      <Send className="w-4 h-4" />
-                    </>
-                  )}
-                </button>
-              </div>
-            </form>
-          )}
-        </div>
-
-        {/* Social links */}
-        <div
-          className={`flex gap-4 mt-16 pt-12 border-t-2 border-white/10 transition-all duration-700 delay-300 ${
-            isVisible ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          {socialLinks.map((social, index) => (
-            <a
-              key={index}
-              href={social.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 font-mono text-xs text-white/50 uppercase tracking-widest border-2 border-white/10 px-4 py-2 hover:border-neo-yellow hover:text-neo-yellow hover:shadow-[3px_3px_0_#FBFF48] transition-all duration-150"
+        {status === 'success' ? (
+          <div className="border border-accent/50 bg-accent-dim p-8 max-w-xl">
+            <CheckCircle className="w-10 h-10 text-accent mb-4" />
+            <h3 className="font-display text-xl font-semibold text-fg mb-2">
+              Message sent.
+            </h3>
+            <p className="text-fg-muted text-sm mb-5">
+              ありがとうございます。確認次第ご返信します。
+            </p>
+            <button
+              onClick={() => setStatus('idle')}
+              className="font-mono text-[11px] text-accent uppercase tracking-[0.15em] hover:underline underline-offset-4"
             >
-              <social.icon className="w-4 h-4" />
-              {social.label}
-            </a>
-          ))}
+              Send another
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="max-w-xl space-y-4">
+            <div className="grid md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Name"
+                required
+                disabled={status === 'submitting'}
+                className={inputClass}
+              />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Email"
+                required
+                disabled={status === 'submitting'}
+                className={inputClass}
+              />
+            </div>
+
+            <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              placeholder="Message"
+              required
+              rows={6}
+              disabled={status === 'submitting'}
+              className={`${inputClass} resize-none`}
+            />
+
+            {status === 'error' && (
+              <div className="flex items-start gap-2 text-[13px] text-fg-muted border border-border p-3">
+                <AlertCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                <span>
+                  送信に失敗しました。時間をおいて再度お試しいただくか、GitHub 経由でご連絡ください。
+                </span>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={status === 'submitting'}
+              className="inline-flex items-center gap-2 bg-accent text-ink font-medium px-6 py-3 text-sm transition-transform hover:-translate-y-0.5 disabled:opacity-50 disabled:pointer-events-none"
+            >
+              {status === 'submitting' ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Sending...
+                </>
+              ) : (
+                <>
+                  Send message
+                  <Send className="w-4 h-4" />
+                </>
+              )}
+            </button>
+          </form>
+        )}
+
+        <div className="mt-14 pt-10 border-t border-border flex flex-wrap items-center gap-x-6 gap-y-3">
+          <a
+            href="https://github.com/Pens-1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2 font-mono text-[12px] text-fg-muted hover:text-accent transition-colors"
+          >
+            <Github className="w-3.5 h-3.5" />
+            github.com/Pens-1
+            <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+          </a>
+          <a
+            href="mailto:d0193480501@gmail.com"
+            className="group inline-flex items-center gap-2 font-mono text-[12px] text-fg-muted hover:text-accent transition-colors"
+          >
+            <Mail className="w-3.5 h-3.5" />
+            d0193480501@gmail.com
+            <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+          </a>
         </div>
 
-        <div
-          className={`mt-12 font-mono text-[10px] text-white/20 uppercase tracking-widest transition-all duration-700 delay-[400ms] ${
-            isVisible ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          © 2025 Portfolio. All rights reserved.
+        <div className="mt-10 font-mono text-[10px] text-fg-faint uppercase tracking-[0.15em]">
+          © 2026 Yamamoto. Built with React + Vite.
         </div>
       </div>
     </section>

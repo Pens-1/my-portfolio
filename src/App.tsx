@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Home from './components/Home';
@@ -6,26 +5,21 @@ import Works from './components/Works';
 import About from './components/About';
 import Contact from './components/Contact';
 import WorkDetail from './components/WorkDetail';
-import CustomCursor from './components/CustomCursor';
+
+const HomePage = () => (
+  <>
+    <a href="#main" className="skip-link">Skip to content</a>
+    <Navigation />
+    <main id="main">
+      <Home />
+      <Works />
+      <About />
+      <Contact />
+    </main>
+  </>
+);
 
 function App() {
-  useEffect(() => {
-    document.body.style.overflow = 'auto';
-  }, []);
-
-  const HomePage = () => (
-    <div className="relative">
-      <CustomCursor />
-      <Navigation />
-      <main>
-        <Home />
-        <Works />
-        <About />
-        <Contact />
-      </main>
-    </div>
-  );
-
   return (
     <BrowserRouter>
       <Routes>

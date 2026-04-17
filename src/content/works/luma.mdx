@@ -1,0 +1,30 @@
+---
+id: 8
+slug: "luma"
+title: "luma"
+subtitle: "Local Unified Management Agent — Gemini × n8n daily scheduler"
+group: "automation"
+year: "2026.02"
+description: "n8n + Gemini 1.5 Flash で Google Calendar の予定を毎朝自動解析し、空き時間にタスクを詰め直して Discord に通知する個人用エージェント。"
+technologies: ["n8n", "Gemini API", "Google Calendar API", "Notion API", "Discord Webhook", "Docker"]
+githubUrl: "https://github.com/Pens-1/luma"
+repoVisibility: "public"
+---
+
+## Overview
+
+自分専用の日次タスク再配置エージェント。毎朝 8:00 に起動し、カレンダーと Notion の Todo を読みに行って、その日の最適な予定を Discord に投げ返す。
+
+## Flow
+
+1. Schedule Trigger(n8n、毎朝 8:00)
+2. Google Calendar から当日の予定取得
+3. Notion DB から未着手 Todo 取得
+4. Gemini 1.5 Flash が空き時間を分析 → タスク割り付け提案
+5. Discord Webhook で通知
+
+## Why this stack
+
+- **n8n**: UI でワークフローを見直しやすい / Docker で常駐コスト小
+- **Gemini 1.5 Flash**: 無料枠で十分、毎日1回の呼び出しなら費用ゼロ
+- **Notion + Discord**: 既に使っているツールにフックするだけで、専用 UI を作らなくてよい

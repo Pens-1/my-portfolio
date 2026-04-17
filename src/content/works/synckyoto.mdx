@@ -1,0 +1,41 @@
+---
+id: 10
+slug: "synckyoto"
+title: "SyncKyoto"
+subtitle: "Kyoto over-tourism solution using Gale-Shapley matching"
+group: "ml"
+year: "2026.02"
+description: "京都のオーバーツーリズム問題に対し、Gale-Shapley マッチングと行動経済的インセンティブを組み合わせた観光客/観光地マッチング Web アプリ。"
+technologies: ["Python", "FastAPI", "React", "TypeScript", "PostgreSQL", "Nginx", "Docker", "Gemini API"]
+repoVisibility: "private"
+---
+
+## Overview
+
+京都のバス・観光地が「有名スポットに観光客が集中」「地元住民が日常利用できない」状況にあることを出発点に、**観光客の嗜好と観光地のキャパシティを同時最適化する** Web アプリを作った。
+
+## Three pillars
+
+| 柱 | 手法 |
+|---|---|
+| Swipe Preferences | Tinder 風 UI で嗜好プロファイル(静寂/歴史/自然/美術/食)を推定 |
+| Gale-Shapley Matching | ノーベル賞アルゴリズムで観光客×POI をシステム最適に割り当て |
+| Gamification Points | ガラガラスポットに行くとポイント加算 → 分散を促進 |
+
+## Architecture
+
+```
+Client → Nginx :8080 → FastAPI (algo/)
+                     ↘ React SPA (frontend/)
+                     ↘ PostgreSQL
+                     ↘ Gemini API (補助生成)
+```
+
+- `algo/` にマッチングロジックと API
+- `frontend/` に SPA
+- `docker-compose.yml` 一発で全体起動
+- JWT 認証、dev secret は `.env.example` と分離
+
+## Key decision
+
+単純な greedy ルーティングを捨てて、**系全体の welfare を見る組合せ最適化** に振ったのが設計の要。混雑の再生産を止めるには、個人最適ではなく系最適のアルゴリズムが必要、という仮説をそのまま実装に落とした。

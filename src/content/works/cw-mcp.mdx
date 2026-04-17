@@ -1,0 +1,35 @@
+---
+id: 5
+slug: "cw-mcp"
+title: "cw-mcp"
+subtitle: "MCP server that drives freelance job discovery and applications"
+group: "automation"
+year: "2026.04"
+description: "CrowdWorks を対象にした案件評価・応募の自動化を MCP サーバー化した。LLM クライアント(Claude 等)から案件を直接審議・応募できる。"
+technologies: ["Python", "MCP Protocol", "Playwright", "FastAPI", "PostgreSQL", "Alembic", "Docker"]
+repoVisibility: "private"
+---
+
+## Overview
+
+CrowdWorks 上の案件を評価→応募するまでの一連のオペレーションを、MCP(Model Context Protocol)ツール群として公開するサーバー。Claude などの LLM クライアントから関数呼び出し的に案件を操作できる。
+
+## Why MCP
+
+- 応募文生成・案件審議・送信操作を **LLM 側の裁量に委ねられる**
+- 単発スクリプトではなく会話文脈を持った自動化が可能
+- 「Sランクだけまとめて応募」「未読メッセージだけ読んで返信」が自然言語で回せる
+
+## Architecture
+
+- `src/` — MCP ツール本体(Python + FastMCP)
+- `frontend/` — 案件審議 UI(承認キュー)
+- Playwright で認証・操作。MCP 経由での並列呼び出しはロックで直列化
+- PostgreSQL + Alembic でマイグレーション管理
+- Docker Compose で `backend + frontend + db` を一式起動
+
+## Design decisions
+
+- **応募は必ず直列**: ログイン競合で重複応募を起こしやすいので並列不可
+- **評価と応募を分離**: まず評価を保存、人間が確認してから送信
+- **案件の実装可能性も評価対象**: SNS 大量アカウント自動化など、技術的に通るがリスクが高い案件を自動で低ランク化

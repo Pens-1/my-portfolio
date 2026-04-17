@@ -1,0 +1,29 @@
+---
+id: 2
+slug: "bt-light"
+title: "bt-light"
+subtitle: "ESP32 + BLE lamp controller with a handwritten HTTP server"
+group: "hardware"
+year: "2026.04"
+description: "ESP32(Arduino framework)で動くBLE + WiFiベースのランプコントローラ。外部HTTPライブラリを使わず、素のWiFiServerで HTTP レスポンダを自作した。"
+technologies: ["C++", "ESP32", "PlatformIO", "Arduino", "BLE", "WiFi"]
+githubUrl: "https://github.com/Pens-1/bt-light"
+repoVisibility: "public"
+---
+
+## Overview
+
+物理ランプを BLE / WiFi 経由で制御するための ESP32 ファームウェア。外部の HTTPサーバーライブラリ(ESPAsyncWebServer 等)を意図的に使わず、`WiFiServer` / `WiFiClient` の生ソケット API 上に、必要最小の HTTP/1.1 レスポンダを手で書いた。
+
+## Why no HTTP library
+
+- 依存を増やすほどフラッシュ消費とビルド不安定が増える
+- 実装が HTTP 仕様のごく一部で足りる(JSON を返すだけ)
+- 低レイヤーの挙動を手で触っておくと、後で非同期化やタイムアウトの調整が効く
+
+## Tech
+
+- Platform: `esp32dev` / Arduino framework (`platformio.ini`)
+- パーティション: `huge_app.csv` (BLE + WiFi + 自作HTTPをまとめて載せる)
+- 依存: `ArduinoJson` のみ
+- 静的IP設定、自動再接続、BLE 並列広告に対応

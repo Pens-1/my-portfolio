@@ -1,0 +1,33 @@
+---
+id: 7
+slug: "hight-agent"
+title: "hight-agent-ai"
+subtitle: "Local-first AI agent specialized for course-credit planning"
+group: "automation"
+year: "2025.11"
+description: "ローカルで動作する単位取得特化 AI エージェント。OCR サービス、n8n ワークフロー、バックエンド、フロントを統合した Docker Compose 一式。"
+technologies: ["Python", "Local LLM", "n8n", "OCR", "Docker", "Next.js"]
+githubUrl: "https://github.com/Pens-1/hight-agent-ai"
+repoVisibility: "public"
+---
+
+## Overview
+
+「次学期、どの科目を取れば最短で卒業できるか」を解くためのローカル AI エージェント。履修要綱 PDF を OCR → ルールベース解析 → LLM で提案、という多段構成。
+
+## Components
+
+- **backend**: Python API サーバー、履修判定ロジック
+- **frontend**: Next.js / TypeScript、提案を可視化
+- **ocr-service**: PDF → テキスト抽出
+- **n8n**: バッチジョブ(履修要項更新の検知など)
+- **database**: 科目・履修情報
+
+## Why local
+
+- 履修要項 PDF や個人の成績履歴を **クラウドに渡したくない**
+- 大学ローカルネットワーク内で完結できる構成を優先
+
+## Stack
+
+フルスタック構成を Docker Compose で一発起動できる。設計書(`DESIGN.md` / `仕様書.md`)込み。
