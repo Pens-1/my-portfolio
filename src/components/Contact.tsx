@@ -164,11 +164,11 @@ const Contact = () => {
             <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
           </a>
           <a
-            href="mailto:d0193480501@gmail.com"
+            href="mailto:hello@yamataku.dev"
             className="group inline-flex items-center gap-2 font-mono text-[12px] text-fg-muted hover:text-accent transition-colors"
           >
             <Mail className="w-3.5 h-3.5" />
-            d0193480501@gmail.com
+            hello@yamataku.dev
             <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
           </a>
         </div>

@@ -2,8 +2,71 @@ import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { MDXProvider } from '@mdx-js/react';
 import { Github, ExternalLink, ArrowLeft, Lock } from 'lucide-react';
-import { getWorkById, GROUP_META } from '../lib/works';
+import { getWorkById, GROUP_META, type Work } from '../lib/works';
 import MDXComponents from './MDXComponents';
+
+const SITE = 'https://yamataku.dev';
+
+const setHead = (work: Work) => {
+  const url = `${SITE}/work/${work.id}`;
+  const title = `${work.title} — Yamataku`;
+  const desc = (work.subtitle || work.description).slice(0, 155);
+
+  document.title = title;
+
+  const upsert = (selector: string, attrs: Record<string, string>) => {
+    let el = document.querySelector(selector) as HTMLElement | null;
+    if (!el) {
+      el = document.createElement(selector.startsWith('meta') ? 'meta' : 'link');
+      document.head.appendChild(el);
+    }
+    Object.entries(attrs).forEach(([k, v]) => el!.setAttribute(k, v));
+  };
+
+  upsert('meta[name="description"]', { name: 'description', content: desc });
+  upsert('link[rel="canonical"]', { rel: 'canonical', href: url });
+  upsert('meta[property="og:url"]', { property: 'og:url', content: url });
+  upsert('meta[property="og:title"]', { property: 'og:title', content: title });
+  upsert('meta[property="og:description"]', { property: 'og:description', content: desc });
+  upsert('meta[property="og:type"]', { property: 'og:type', content: 'article' });
+  upsert('meta[name="twitter:title"]', { name: 'twitter:title', content: title });
+  upsert('meta[name="twitter:description"]', { name: 'twitter:description', content: desc });
+
+  // JSON-LD CreativeWork
+  const existing = document.getElementById('jsonld-work');
+  if (existing) existing.remove();
+  const ld = document.createElement('script');
+  ld.type = 'application/ld+json';
+  ld.id = 'jsonld-work';
+  ld.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: work.title,
+    alternateName: work.subtitle,
+    description: work.description,
+    url,
+    image: `${SITE}/og.png`,
+    datePublished: work.year,
+    author: {
+      '@type': 'Person',
+      name: 'Takuya Yamamoto',
+      alternateName: 'Yamataku',
+      url: SITE,
+    },
+    keywords: work.technologies.join(', '),
+    ...(work.demoUrl ? { sameAs: [work.demoUrl] } : {}),
+    ...(work.githubUrl ? { codeRepository: work.githubUrl } : {}),
+  });
+  document.head.appendChild(ld);
+};
+
+const restoreHome = () => {
+  document.title = 'Yamataku — Engineer | 同志社大学 / トモシゴト / GradeS';
+  const link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+  if (link) link.href = `${SITE}/`;
+  const existing = document.getElementById('jsonld-work');
+  if (existing) existing.remove();
+};
 
 const WorkDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -12,7 +75,9 @@ const WorkDetail = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
-  }, [id]);
+    if (work) setHead(work);
+    return () => restoreHome();
+  }, [id, work]);
 
   if (!work) {
     return (

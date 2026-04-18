@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://portfolio.fullweak.com/</loc>
-    <changefreq>monthly</changefreq>
+    <loc>https://yamataku.dev/</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-  <url><loc>https://portfolio.fullweak.com/work/1</loc><priority>0.9</priority></url>
-  <url><loc>https://portfolio.fullweak.com/work/2</loc><priority>0.7</priority></url>
-  <url><loc>https://portfolio.fullweak.com/work/3</loc><priority>0.7</priority></url>
-  <url><loc>https://portfolio.fullweak.com/work/4</loc><priority>0.7</priority></url>
-  <url><loc>https://portfolio.fullweak.com/work/5</loc><priority>0.7</priority></url>
-  <url><loc>https://portfolio.fullweak.com/work/6</loc><priority>0.5</priority></url>
-  <url><loc>https://portfolio.fullweak.com/work/7</loc><priority>0.5</priority></url>
-  <url><loc>https://portfolio.fullweak.com/work/8</loc><priority>0.5</priority></url>
-  <url><loc>https://portfolio.fullweak.com/work/9</loc><priority>0.5</priority></url>
-  <url><loc>https://portfolio.fullweak.com/work/10</loc><priority>0.5</priority></url>
-  <url><loc>https://portfolio.fullweak.com/work/11</loc><priority>0.5</priority></url>
-  <url><loc>https://portfolio.fullweak.com/work/12</loc><priority>0.9</priority></url>
+  <url>
+    <loc>https://yamataku.dev/work/1</loc>
+    <lastmod>2026-04-18</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yamataku.dev/work/12</loc>
+    <lastmod>2026-04-18</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url><loc>https://yamataku.dev/work/2</loc><lastmod>2026-04-18</lastmod><priority>0.7</priority></url>
+  <url><loc>https://yamataku.dev/work/3</loc><lastmod>2026-04-18</lastmod><priority>0.7</priority></url>
+  <url><loc>https://yamataku.dev/work/4</loc><lastmod>2026-04-18</lastmod><priority>0.7</priority></url>
+  <url><loc>https://yamataku.dev/work/5</loc><lastmod>2026-04-18</lastmod><priority>0.7</priority></url>
+  <url><loc>https://yamataku.dev/work/6</loc><lastmod>2026-04-18</lastmod><priority>0.5</priority></url>
+  <url><loc>https://yamataku.dev/work/7</loc><lastmod>2026-04-18</lastmod><priority>0.5</priority></url>
+  <url><loc>https://yamataku.dev/work/8</loc><lastmod>2026-04-18</lastmod><priority>0.5</priority></url>
+  <url><loc>https://yamataku.dev/work/9</loc><lastmod>2026-04-18</lastmod><priority>0.5</priority></url>
+  <url><loc>https://yamataku.dev/work/10</loc><lastmod>2026-04-18</lastmod><priority>0.5</priority></url>
+  <url><loc>https://yamataku.dev/work/11</loc><lastmod>2026-04-18</lastmod><priority>0.5</priority></url>
 </urlset>
