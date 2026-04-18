@@ -31,8 +31,13 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const go = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  const go = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth' });
+    const newHash = id === 'home' ? '' : `#${id}`;
+    history.pushState(null, '', newHash || window.location.pathname);
   };
 
   return (
@@ -43,25 +48,27 @@ const Navigation = () => {
       }`}
     >
       <div className="container-wide flex items-center justify-between py-5">
-        <button
-          onClick={() => go('home')}
+        <a
+          href="#home"
+          onClick={(e) => go(e, 'home')}
           className="font-mono text-xs tracking-[0.2em] text-fg hover:text-accent transition-colors"
         >
-          YAMAMOTO<span className="text-accent">.</span>
-        </button>
+          YAMATAKU<span className="text-accent">.</span>
+        </a>
 
         <ul className="hidden md:flex items-center gap-1">
           {NAV_ITEMS.map(({ id, label, num }) => (
             <li key={id}>
-              <button
-                onClick={() => go(id)}
+              <a
+                href={`#${id}`}
+                onClick={(e) => go(e, id)}
                 className={`group flex items-center gap-2 px-3 py-2 font-mono text-[11px] tracking-[0.15em] uppercase transition-colors ${
                   active === id ? 'text-accent' : 'text-fg-muted hover:text-fg'
                 }`}
               >
                 <span className="text-accent/60">{num}.</span>
                 {label}
-              </button>
+              </a>
             </li>
           ))}
         </ul>

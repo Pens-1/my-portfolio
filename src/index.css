@@ -41,9 +41,14 @@
 
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+  }
+
+  section[id] {
+    scroll-margin-top: 5rem;
   }
 
   body {
