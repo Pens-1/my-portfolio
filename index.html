@@ -2,19 +2,59 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Yamamoto — Full-stack engineer. From ESP32 firmware to production web services. Running GradeS (1,200+ users). Freelance on CrowdWorks." />
-    <meta property="og:title" content="Yamamoto — Engineer who ships products people actually use" />
-    <meta property="og:description" content="From ESP32 firmware to production web services. Hardware, local LLM automation, ML, full-stack web." />
-    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#0a0a0a" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Primary meta tags -->
     <title>Yamamoto — Engineer</title>
+    <meta name="description" content="回路基板から本番 Web サービスまで通せるエンジニア。同志社ローム記念館プロジェクト「トモシゴト」(15名)をリード、ダイキン連携、GradeS(1,200+ユーザー) 運用。" />
+    <meta name="author" content="Yamamoto" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://portfolio.fullweak.com/" />
+    <meta property="og:title" content="Yamamoto — Engineer who ships products people actually use" />
+    <meta property="og:description" content="Leading a 15-person student lab at Doshisha Rohm Hall. Shipped GradeS (1,200+ users in 1 week). Hardware × Local LLM × Web × Infra." />
+    <meta property="og:image" content="https://portfolio.fullweak.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="ja_JP" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Yamamoto — Engineer" />
+    <meta name="twitter:description" content="15-person student lab lead. Shipped GradeS (1,200+ users). Hardware × Local LLM × Web × Infra." />
+    <meta name="twitter:image" content="https://portfolio.fullweak.com/og.png" />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" as="style">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Theme bootstrap: avoid FOUC -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+          var theme = stored || (prefersLight ? 'light' : 'dark');
+          if (theme === 'light') document.documentElement.classList.add('light');
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Cloudflare Web Analytics (privacy-friendly, cookie-less) -->
+    <!-- Replace {{CF_ANALYTICS_TOKEN}} with the token from Cloudflare dashboard → Analytics → Web Analytics after deploy -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "{{CF_ANALYTICS_TOKEN}}"}'></script>
   </body>
 </html>

@@ -5,6 +5,7 @@ import Works from './components/Works';
 import About, { Leadership } from './components/About';
 import Contact from './components/Contact';
 import WorkDetail from './components/WorkDetail';
+import NotFound from './components/NotFound';
 
 const HomePage = () => (
   <>
@@ -26,6 +27,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/work/:id" element={<WorkDetail />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

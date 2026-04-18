@@ -3,6 +3,34 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --ink: #0a0a0a;
+    --surface: #111111;
+    --elevated: #161616;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --fg: #e8e8e8;
+    --fg-muted: #9a9a9a;
+    --fg-faint: #5c5c5c;
+    --accent: #7cf7d6;
+    --accent-dim: rgba(124, 247, 214, 0.12);
+    color-scheme: dark;
+  }
+
+  :root.light {
+    --ink: #fafaf9;
+    --surface: #f4f4f2;
+    --elevated: #eeeeec;
+    --border: rgba(0, 0, 0, 0.08);
+    --border-strong: rgba(0, 0, 0, 0.18);
+    --fg: #0a0a0a;
+    --fg-muted: #55554f;
+    --fg-faint: #888880;
+    --accent: #0d9488;
+    --accent-dim: rgba(13, 148, 136, 0.08);
+    color-scheme: light;
+  }
+
   *,
   *::before,
   *::after {
@@ -20,19 +48,20 @@
 
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background: #0a0a0a;
-    color: #e8e8e8;
+    background: var(--ink);
+    color: var(--fg);
     overflow-x: hidden;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   ::selection {
-    background: rgba(124, 247, 214, 0.2);
-    color: #e8e8e8;
+    background: var(--accent-dim);
+    color: var(--fg);
   }
 
   :focus-visible {
-    outline: 2px solid #7cf7d6;
+    outline: 2px solid var(--accent);
     outline-offset: 3px;
   }
 
@@ -60,23 +89,55 @@
   }
 
   .eyebrow {
-    @apply font-mono text-[11px] uppercase tracking-[0.18em] text-accent;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent);
   }
 
   .link-accent {
-    @apply text-accent relative inline-flex items-center gap-1 transition-colors;
+    color: var(--accent);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: color 0.15s ease;
   }
 
   .link-accent::after {
     content: '';
-    @apply absolute left-0 bottom-0 h-px w-full bg-accent/30 transition-all;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+    background: var(--accent);
+    opacity: 0.3;
+    transition: opacity 0.15s ease;
   }
 
   .link-accent:hover::after {
-    @apply bg-accent;
+    opacity: 1;
   }
 
   .skip-link {
-    @apply absolute left-2 top-2 z-[100] -translate-y-20 rounded bg-accent px-4 py-2 font-mono text-xs font-semibold text-ink transition-transform focus:translate-y-0;
+    position: absolute;
+    left: 0.5rem;
+    top: 0.5rem;
+    z-index: 100;
+    transform: translateY(-5rem);
+    background: var(--accent);
+    color: var(--ink);
+    padding: 0.5rem 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 4px;
+    transition: transform 0.15s ease;
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
   }
 }

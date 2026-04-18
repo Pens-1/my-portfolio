@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import ThemeToggle from './ThemeToggle';
 
 const NAV_ITEMS = [
   { id: 'home', label: 'Home', num: '01' },
@@ -65,14 +66,17 @@ const Navigation = () => {
           ))}
         </ul>
 
-        <a
-          href="https://github.com/Pens-1"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden md:inline-flex font-mono text-[11px] tracking-[0.15em] uppercase border border-accent/50 text-accent px-3 py-2 hover:bg-accent-dim transition-colors"
-        >
-          GitHub ↗
-        </a>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <a
+            href="https://github.com/Pens-1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:inline-flex font-mono text-[11px] tracking-[0.15em] uppercase border border-accent/50 text-accent px-3 py-2 hover:bg-accent-dim transition-colors"
+          >
+            GitHub ↗
+          </a>
+        </div>
       </div>
     </nav>
   );

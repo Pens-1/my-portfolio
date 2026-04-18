@@ -4,7 +4,6 @@ import mdx from '@mdx-js/rollup';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     {
@@ -20,10 +19,23 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 4444,
     watch: {
-      usePolling: true, // Docker内でファイル変更を検知するために必要
+      usePolling: true,
     },
   },
   optimizeDeps: {
     exclude: ['lucide-react'],
+  },
+  build: {
+    target: 'es2020',
+    cssCodeSplit: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          mdx: ['@mdx-js/react'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 600,
   },
 });

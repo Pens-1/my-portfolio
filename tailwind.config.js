@@ -4,16 +4,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: '#0a0a0a',
-        surface: '#111111',
-        elevated: '#161616',
-        border: 'rgba(255, 255, 255, 0.08)',
-        'border-strong': 'rgba(255, 255, 255, 0.14)',
-        fg: '#e8e8e8',
-        'fg-muted': '#9a9a9a',
-        'fg-faint': '#5c5c5c',
-        accent: '#7cf7d6',
-        'accent-dim': 'rgba(124, 247, 214, 0.12)',
+        ink: 'var(--ink)',
+        surface: 'var(--surface)',
+        elevated: 'var(--elevated)',
+        border: 'var(--border)',
+        'border-strong': 'var(--border-strong)',
+        fg: 'var(--fg)',
+        'fg-muted': 'var(--fg-muted)',
+        'fg-faint': 'var(--fg-faint)',
+        accent: 'var(--accent)',
+        'accent-dim': 'var(--accent-dim)',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
