@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react';
 const NAV_ITEMS = [
   { id: 'home', label: 'Home', num: '01' },
   { id: 'works', label: 'Works', num: '02' },
-  { id: 'about', label: 'About', num: '03' },
-  { id: 'contact', label: 'Contact', num: '04' },
+  { id: 'leadership', label: 'Leadership', num: '03' },
+  { id: 'about', label: 'About', num: '04' },
+  { id: 'contact', label: 'Contact', num: '05' },
 ];
 
 const Navigation = () => {

@@ -10,6 +10,7 @@ export interface WorkMetadata {
   group: WorkGroup;
   year: string;
   featured?: boolean;
+  highlight?: boolean;
   description: string;
   technologies: string[];
   imageUrl?: string;

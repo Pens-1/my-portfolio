@@ -2,28 +2,55 @@
 id: 2
 slug: "bt-light"
 title: "bt-light"
-subtitle: "ESP32 + BLE lamp controller with a handwritten HTTP server"
+subtitle: "ESP32 lamp controllable from claude.ai via MCP over Cloudflare Tunnel"
 group: "hardware"
 year: "2026.04"
-description: "ESP32(Arduino framework)で動くBLE + WiFiベースのランプコントローラ。外部HTTPライブラリを使わず、素のWiFiServerで HTTP レスポンダを自作した。"
-technologies: ["C++", "ESP32", "PlatformIO", "Arduino", "BLE", "WiFi"]
+description: "ESP32 + BLE + WiFi で動くランプのファームウェアと、そのランプを AI エージェントから操作できる MCP サーバーをセットで開発。stdio / HTTP(SSE)両モード対応、Cloudflare Tunnel 経由で claude.ai からもリモート操作できる。"
+technologies: ["C++", "ESP32", "PlatformIO", "BLE", "WiFi", "MCP Protocol", "FastMCP", "Cloudflare Tunnel", "Docker"]
 githubUrl: "https://github.com/Pens-1/bt-light"
 repoVisibility: "public"
 ---
 
 ## Overview
 
-物理ランプを BLE / WiFi 経由で制御するための ESP32 ファームウェア。外部の HTTPサーバーライブラリ(ESPAsyncWebServer 等)を意図的に使わず、`WiFiServer` / `WiFiClient` の生ソケット API 上に、必要最小の HTTP/1.1 レスポンダを手で書いた。
+自宅の物理ランプを「LLM から直接操作できる」状態にするために、ハードウェア・ファームウェア・MCP サーバー・公開基盤まで全部自作した。end-to-end で:
 
-## Why no HTTP library
+```
+claude.ai  ─(MCP / SSE)→  Cloudflare Tunnel
+                            ↓
+                         MCP Server (FastMCP, Docker)
+                            ↓
+                         ESP32 (HTTP)
+                            ↓
+                         🔦 Lamp
+```
 
-- 依存を増やすほどフラッシュ消費とビルド不安定が増える
-- 実装が HTTP 仕様のごく一部で足りる(JSON を返すだけ)
-- 低レイヤーの挙動を手で触っておくと、後で非同期化やタイムアウトの調整が効く
+## Firmware (C++ / ESP32)
 
-## Tech
+- Arduino framework on PlatformIO(`esp32dev`, `huge_app.csv`)
+- **外部HTTPサーバーライブラリを使わず、素の `WiFiServer` / `WiFiClient` で HTTP/1.1 レスポンダを自作**
+- BLE 広告 + WiFi 並列
+- 静的 IP 設定、自動再接続
 
-- Platform: `esp32dev` / Arduino framework (`platformio.ini`)
-- パーティション: `huge_app.csv` (BLE + WiFi + 自作HTTPをまとめて載せる)
-- 依存: `ArduinoJson` のみ
-- 静的IP設定、自動再接続、BLE 並列広告に対応
+## MCP Server (Python / FastMCP)
+
+```python
+# stdio モード(Claude Code ローカル)
+python server.py
+
+# HTTP/SSE モード(claude.ai リモート)
+BT_LIGHT_HOST=192.168.0.43 MCP_API_KEY=secret python server.py --sse
+```
+
+- FastMCP で ESP32 HTTP API をラップ
+- OAuth トークンセッション管理
+- Docker Compose でコンテナ常駐
+- ログは `logs/mcp.log` に保存
+
+## Public exposure
+
+Cloudflare Tunnel(`cloudflared`)で自宅 NAT を越えて `*.trycloudflare.com` に公開。claude.ai からも(認証付きで)ランプを操作できる。
+
+## Why this matters
+
+2026 年の LLM エコシステムで MCP が標準化されつつあるが、**物理デバイスに MCP を挿せてる作品は相当少ない**。ハードの境界 → ネットワーク境界 → LLM 境界の3つをまたいで動くフルスタック IoT × AI の実演。

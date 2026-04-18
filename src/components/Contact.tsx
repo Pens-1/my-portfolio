@@ -61,7 +61,7 @@ const Contact = () => {
     <section id="contact" className="py-28 md:py-36 border-t border-border">
       <div className="container-prose">
         <header className="mb-12">
-          <div className="eyebrow mb-3">04. Contact</div>
+          <div className="eyebrow mb-3">05. Contact</div>
           <h2 className="font-display text-display-lg text-fg mb-4">
             Get in touch.
           </h2>

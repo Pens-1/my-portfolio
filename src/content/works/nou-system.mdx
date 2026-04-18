@@ -1,0 +1,55 @@
+---
+id: 12
+slug: "nou-system"
+title: "能楽部シフト表生成システム"
+subtitle: "Real-world scheduler deployed for 84 club members at Doshisha"
+group: "live"
+year: "2026.04"
+featured: true
+highlight: true
+description: "同志社大学能楽部の練習時間割を自動生成する Web アプリ。出席確認とシフト作成を週2回繰り返す運用を置き換え、管理者の負担を90%削減した。登録ユーザー84名、2026年4月から本格運用。"
+technologies: ["Python", "FastAPI", "PostgreSQL", "React", "TypeScript", "Kubernetes", "Nginx", "Docker"]
+repoVisibility: "private"
+metrics:
+  - label: "registered users"
+    value: "84"
+  - label: "admin workload cut"
+    value: "-90%"
+  - label: "status"
+    value: "in production"
+---
+
+## Overview
+
+同志社大学能楽部の運営負担を解消するために作った、練習シフト自動生成 Web アプリ。能楽部ではシテ・ワキ・地謡・楽器など複数パートがあり、毎週2回、メール出席確認 45 分 + シフト作成 2 時間を手作業で繰り返していた。
+
+**導入後:**
+- メール出席確認 → Web 上での出席登録
+- シフト作成 → 出席とパート登録から自動生成
+- 管理者は **レビューと軽微な修正だけ** で完結
+
+## Numbers
+
+| 指標 | 数値 |
+|---|---|
+| 登録ユーザー(部員) | 84名 |
+| 管理者負担の削減 | 90% |
+| 運用開始 | 2026年4月(テスト運用終了、本格運用へ) |
+
+## My role
+
+要件定義 → 設計 → 実装 → 運用改善まで、学生チームで完結させたうちのコア開発を担当。特に:
+- 制約(パート定員・優先度・重複禁止)を満たすスケジューリングロジック
+- 本番環境への Kubernetes デプロイ(namespace/ingress/secret/postgres/nginx/backup 分離)
+- テスト駆動開発での品質担保(ダイキン工業様のプロエンジニアからコードレビューを受けた経験を反映)
+
+## Architecture
+
+- Backend: Python / FastAPI / PostgreSQL
+- Frontend: React / TypeScript
+- Infra: Kubernetes(namespace `tomosigoto`)+ Nginx + 自動バックアップ
+- Dev/Prod を `.env` と `docker-compose.prod.yml` で分離
+
+## What this proved
+
+学生だけで **要件定義から本番運用まで** 一気通貫できることを示した社会実装。トモシゴトプロジェクトのハッカソン優勝やベンチャーコンテスト受賞につながった根っこの実績。

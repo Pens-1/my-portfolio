@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Home from './components/Home';
 import Works from './components/Works';
-import About from './components/About';
+import About, { Leadership } from './components/About';
 import Contact from './components/Contact';
 import WorkDetail from './components/WorkDetail';
 
@@ -13,6 +13,7 @@ const HomePage = () => (
     <main id="main">
       <Home />
       <Works />
+      <Leadership />
       <About />
       <Contact />
     </main>
