@@ -61,7 +61,7 @@ const setHead = (work: Work) => {
 };
 
 const restoreHome = () => {
-  document.title = 'Yamataku — Engineer | 同志社大学 / トモシゴト / GradeS';
+  document.title = 'Yamataku — Engineer | GradeS / 学内ラボ';
   const link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
   if (link) link.href = `${SITE}/`;
   const existing = document.getElementById('jsonld-work');

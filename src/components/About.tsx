@@ -26,21 +26,21 @@ const DOMAINS = [
 const TIMELINE = [
   {
     year: 'Now',
-    title: 'Project Lead · Tomosigoto Lab(ローム記念館プロジェクト第23期)',
+    title: 'Project Lead · 学内ラボプロジェクト(第23期)',
     description:
-      '15名の学生ラボをリード。ダイキン工業様との連携でコードレビュー → TDD+スキーマ駆動へ移行。並行して grades.fullweak.com を個人で運用(1週間で1,200ユーザー/60K検索)。',
+      '22名の学生ラボをリード。大手製造業との連携でコードレビュー → TDD+スキーマ駆動へ移行。並行して grades.fullweak.com を個人で運用(1週間で1,200ユーザー/60K検索)。',
   },
   {
     year: '2025',
-    title: 'Awards · ハッカソン優勝 / DVC ストライク賞',
+    title: 'Awards · ハッカソン優勝 / ベンチャーコンテスト受賞',
     description:
-      '同志社ハッカソン(98名28チーム)で運営チーム優勝、自チームはデータサイエンス賞。同志社ベンチャーコンテストで M&A ストライク賞と京都中央信用金庫賞。',
+      '学内ハッカソン(98名28チーム)で運営チーム優勝、自チームはデータサイエンス賞。学内ベンチャーコンテストで M&A 賞と地域金融機関賞を受賞。',
   },
   {
     year: '2025',
-    title: 'Funding · KOIN ビジネス実践ラボ 採択',
+    title: 'Funding · 公的スタートアップ支援プログラム 採択',
     description:
-      '京都経済センター KOIN 主催、ちえ森 × 日本政策金融公庫共催のビジネス実践ラボに採択され、事業資金 50 万円を獲得。',
+      '公的スタートアップ支援プログラムに採択され、事業資金 50 万円を獲得。',
   },
   {
     year: '2024',
@@ -52,30 +52,30 @@ const TIMELINE = [
 
 const AWARDS = [
   {
-    label: '同志社ハッカソン(98名28チーム)',
+    label: '学内ハッカソン(98名28チーム)',
     detail: 'チーム優勝🏆 + 自チーム データサイエンス賞',
   },
   {
-    label: 'DVC 同志社ベンチャーコンテスト',
-    detail: 'ストライク賞(M&A) + 京都中央信用金庫賞',
+    label: '学内ベンチャーコンテスト',
+    detail: 'M&A 賞 + 地域金融機関賞',
   },
 ];
 
 const FUNDING = {
-  label: 'KOIN ビジネス実践ラボ 採択',
-  detail: '¥500,000 交付 · ちえ森 × 日本政策金融公庫 共催 · 京都経済センター',
+  label: '公的スタートアップ支援プログラム 採択',
+  detail: '¥500,000 交付 · 日本政策金融公庫 共催',
 };
 
 const PARTNERSHIPS = [
   {
-    label: 'ダイキン工業',
+    label: '大手製造業',
     detail: 'プロエンジニアによるコードレビュー、TDD/スキーマ駆動開発への移行支援',
   },
 ];
 
 const AFFILIATIONS = [
-  { label: 'DUFP', detail: 'Doshisha University Formula Project(機械研究会)· 全日本学生フォーミュラ大会' },
-  { label: 'DRC', detail: 'Doshisha Robot Club · 関西春ロボコン 2026 チーム所属' },
+  { label: 'DUFP', detail: '大学公認フォーミュラチーム(機械研究会)· 全日本学生フォーミュラ大会' },
+  { label: 'DRC', detail: '大学公認ロボットサークル · 関西春ロボコン 2026 チーム所属' },
 ];
 
 const CLIENT_WORK = [
@@ -216,11 +216,11 @@ export const Leadership = () => {
               <div>
                 <div className="eyebrow mb-1">Project Lead</div>
                 <h3 className="font-display text-xl font-semibold text-fg">
-                  Tomosigoto Lab(第23期ローム記念館プロジェクト)
+                  学内ラボプロジェクト(第23期)
                 </h3>
                 <p className="text-fg-muted text-sm mt-2 leading-relaxed">
                   「ゼロからの AI 活用型プログラミング人材育成プロジェクト」を掲げた学生ラボ。
-                  <span className="text-fg">15名・3チーム体制</span>でリード。
+                  <span className="text-fg">22名・3チーム体制</span>でリード。
                   要件定義 → 設計 → テスト駆動実装 → 本番運用までを学生のみで回す文化を作り、
                   企業連携・コンテスト受賞・公的採択の三方向で成果を出している。
                 </p>

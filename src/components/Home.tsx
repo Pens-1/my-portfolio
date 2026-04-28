@@ -7,7 +7,7 @@ const SOLO_METRICS = [
 ];
 
 const TEAM_METRICS = [
-  { value: '15', label: 'people led' },
+  { value: '22', label: 'people led' },
   { value: '84', label: 'users served' },
   { value: '¥500K', label: 'public grant' },
 ];
@@ -36,8 +36,8 @@ const Home = () => {
           className="text-fg-muted text-lg md:text-xl max-w-2xl leading-relaxed mb-10 animate-fade-up"
           style={{ animationDelay: '160ms' }}
         >
-          I lead a <span className="text-fg">15-person student lab</span> at Doshisha's Rohm Memorial Hall —
-          building real software for corporate partners like <span className="text-fg">Daikin</span>.
+          I lead a <span className="text-fg">22-person student lab</span> at my university —
+          building real software for corporate partners like <span className="text-fg">a major manufacturer</span>.
           <br className="hidden md:block" />
           Solo, I shipped <a href="https://grades.fullweak.com" target="_blank" rel="noopener noreferrer" className="link-accent">GradeS</a>, reaching 1,200 users in a week.
         </p>
@@ -62,7 +62,7 @@ const Home = () => {
           </div>
 
           <div className="bg-ink p-5 md:p-6">
-            <div className="eyebrow mb-3">Team — Tomosigoto Lab</div>
+            <div className="eyebrow mb-3">Team — University Lab</div>
             <div className="grid grid-cols-3 gap-4">
               {TEAM_METRICS.map((m) => (
                 <div key={m.label}>
@@ -75,7 +75,7 @@ const Home = () => {
                 </div>
               ))}
             </div>
-            <p className="font-mono text-[10px] text-fg-faint mt-4">Doshisha Rohm Hall Project · 23rd term</p>
+            <p className="font-mono text-[10px] text-fg-faint mt-4">University Lab Project · 23rd term</p>
           </div>
         </div>
 
