@@ -168,7 +168,7 @@ const Contact = () => {
             className="group inline-flex items-center gap-2 font-mono text-[12px] text-fg-muted hover:text-accent transition-colors"
           >
             <Mail className="w-3.5 h-3.5" />
-            hello@yamataku.dev
+            me@yamataku.dev
             <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
           </a>
         </div>
