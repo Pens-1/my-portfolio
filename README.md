@@ -6,6 +6,7 @@ A modern and sophisticated portfolio website built with React, TypeScript, and T
 
 ## 🚀 特徴 / Features
 
+- **3Dヒーロー** - WebGL(Three.js / React Three Fiber)のワイヤーフレーム3Dモデル。マウス追従・自転・浮遊、`prefers-reduced-motion` 対応、画面外で描画停止
 - **レスポンシブデザイン** - あらゆるデバイスに対応
 - **モダンなUI/UX** - 洗練されたアニメーションとトランジション
 - **高速パフォーマンス** - Viteによる最適化されたビルド
@@ -19,6 +20,7 @@ A modern and sophisticated portfolio website built with React, TypeScript, and T
 - **Vite** - ビルドツール
 - **Tailwind CSS** - ユーティリティファーストCSS
 - **Lucide React** - アイコンライブラリ
+- **Three.js / React Three Fiber / drei** - 3Dヒーロー（遅延ロードで初期表示に影響なし）
 - **Supabase** - バックエンドサービス（必要に応じて）
 - **Docker** - コンテナ化
 
@@ -35,7 +37,7 @@ npm install
 npm run dev
 ```
 
-ブラウザで `http://localhost:5173` を開いてください。
+ブラウザで `http://localhost:4444` を開いてください。
 
 ## 🏗️ ビルド / Build
 
@@ -73,14 +75,17 @@ my-portfolio/
 │   ├── components/       # Reactコンポーネント
 │   │   ├── Navigation.tsx
 │   │   ├── Home.tsx
+│   │   ├── Hero3D.tsx    # 3Dヒーロー (Three.js / R3F)
 │   │   ├── Works.tsx
 │   │   ├── About.tsx
 │   │   └── Contact.tsx
 │   ├── hooks/           # カスタムフック
+│   ├── lib/             # データ定義 (scene3d.ts: 3Dモデル配列 など)
 │   ├── App.tsx          # メインアプリケーション
 │   ├── main.tsx         # エントリーポイント
 │   └── index.css        # グローバルスタイル
 ├── public/              # 静的ファイル
+│   └── models/          # 3Dモデル (.glb, すべて CC0)
 ├── dist/                # ビルド出力
 ├── Dockerfile           # Docker設定
 ├── docker-compose.yml   # Docker Compose設定
@@ -101,7 +106,8 @@ my-portfolio/
 
 このプロジェクトは以下のプラットフォームにデプロイできます：
 
-- **Vercel** - 推奨（ゼロ設定でReactアプリをデプロイ）
+- **Cloudflare Pages** - 本番運用中（`public/_redirects` / `public/_headers` 設定済み）
+- **Vercel** - ゼロ設定でReactアプリをデプロイ
 - **Netlify** - 静的サイトホスティング
 - **GitHub Pages** - 無料ホスティング
 - **Docker** - 任意のコンテナホスティングサービス
