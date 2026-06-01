@@ -74,7 +74,6 @@ const About = () => {
         {/* Intro — 人柄＋できること＋学生は「在学しながら」で1点 */}
         <p className="max-w-2xl text-fg text-lg leading-relaxed mb-20">
           単調な作業を自動化し、<span className="text-accent">人が創造に集中できる</span>状態を作るエンジニア。
-          同志社大学 機械システム工学科に在学しながら、プロダクト開発・受託・22名チームのリードを並行している。
         </p>
 
         <div className="space-y-16">
