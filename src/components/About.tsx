@@ -4,7 +4,7 @@ import { Github, ChevronDown } from 'lucide-react';
 // 託されてきた役割（先頭3件をデフォルト表示、残りは折りたたみ）
 const TRUSTED = [
   { tag: 'リード', title: '学内ラボ 第23期', detail: '22名・3チームを本番運用までリード' },
-  { tag: '受賞', title: '学内ハッカソン 優勝', detail: '98名28チーム / データサイエンス賞' },
+  { tag: '受賞', title: '学内ハッカソン データサイエンス賞', detail: '' },
   { tag: '採択', title: '公的スタートアップ支援', detail: '¥500,000 交付・日本政策金融公庫 共催' },
   { tag: '受賞', title: '学内ベンチャーコンテスト', detail: 'M&A 賞・地域金融機関賞' },
   { tag: '連携', title: '大手製造業', detail: 'TDD / スキーマ駆動への移行支援' },
@@ -12,6 +12,7 @@ const TRUSTED = [
 
 const AFFILIATIONS = [
   { label: 'DUFP', detail: '大学公認フォーミュラチーム · 全日本学生フォーミュラ大会' },
+  { label: 'トモシゴト', detail: '学内プロダクト開発プロジェクト（Design & Code）· リーダー' },
   { label: 'DRC', detail: '大学公認ロボットサークル · 関西春ロボコン 2026' },
 ];
 
@@ -59,7 +60,7 @@ const RoleRow = ({ tag, title, detail }: { tag: string; title: string; detail: s
     <span className="font-mono text-[11px] text-accent uppercase tracking-[0.12em] md:pt-0.5">{tag}</span>
     <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
       <span className="font-display font-semibold text-fg">{title}</span>
-      <span className="text-fg-muted text-sm">{detail}</span>
+      {detail && <span className="text-fg-muted text-sm">{detail}</span>}
     </div>
   </li>
 );
