@@ -1,8 +1,8 @@
 import { Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Float, useGLTF } from '@react-three/drei';
+import { Float } from '@react-three/drei';
 import * as THREE from 'three';
-import { HERO_MODELS, readAccent, type SceneModel } from '../lib/scene3d';
+import { readAccent } from '../lib/scene3d';
 
 /** prefers-reduced-motion を購読 */
 function usePrefersReducedMotion(): boolean {
@@ -17,60 +17,136 @@ function usePrefersReducedMotion(): boolean {
   return reduced;
 }
 
-/** glb をロードし、バウンディングボックスで正規化＋ワイヤーフレーム化して浮遊・自転させる */
-function WireModel({
-  model,
-  color,
-  reduced,
-}: {
-  model: SceneModel;
-  color: string;
-  reduced: boolean;
-}) {
-  const { scene } = useGLTF(model.path);
+/**
+ * ESP32 開発ボードを手続き生成（全てワイヤーフレーム / ライン）。
+ * 基板アウトライン・ESP32モジュール・メアンダアンテナ・ヘッダピン・配線トレース・SMD部品。
+ * テーマのアクセント色を受けて再構築。テキストの「回路基板から」に直結する象徴。
+ */
+function EspBoard({ color, reduced }: { color: string; reduced: boolean }) {
+  const { obj, pulse, pulsePath } = useMemo(() => {
+    const group = new THREE.Group();
+    const c = new THREE.Color(color);
+    const lineMat = new THREE.LineBasicMaterial({ color: c, transparent: true, opacity: 0.85 });
+    const dimMat = new THREE.LineBasicMaterial({ color: c, transparent: true, opacity: 0.32 });
+    const top = 0.05;
 
-  // モデル固有のサイズ差を吸収し、線画マテリアルへ差し替え
-  const normalized = useMemo(() => {
-    const root = scene.clone(true);
-    const box = new THREE.Box3().setFromObject(root);
-    const size = new THREE.Vector3();
-    const center = new THREE.Vector3();
-    box.getSize(size);
-    box.getCenter(center);
-    const maxDim = Math.max(size.x, size.y, size.z) || 1;
-    const norm = (model.scale * 2.2) / maxDim;
+    const line = (pts: number[][], mat: THREE.Material = lineMat) => {
+      const g = new THREE.BufferGeometry().setFromPoints(
+        pts.map((p) => new THREE.Vector3(p[0], p[1], p[2])),
+      );
+      group.add(new THREE.Line(g, mat as THREE.LineBasicMaterial));
+    };
+    const edges = (geo: THREE.BufferGeometry, x: number, y: number, z: number) => {
+      const e = new THREE.LineSegments(new THREE.EdgesGeometry(geo), lineMat);
+      e.position.set(x, y, z);
+      group.add(e);
+      geo.dispose();
+    };
 
-    const mat = new THREE.MeshBasicMaterial({
-      color: new THREE.Color(color),
-      wireframe: true,
-      transparent: true,
-      opacity: 0.9,
-    });
-    root.traverse((o) => {
-      const mesh = o as THREE.Mesh;
-      if (mesh.isMesh) mesh.material = mat;
-    });
+    // 基板アウトライン（薄い箱のエッジ）
+    edges(new THREE.BoxGeometry(3.6, 0.08, 2.4), 0, 0, 0);
+    // シルク枠（天面の内側矩形）
+    line(
+      [[-1.68, top, -1.08], [1.68, top, -1.08], [1.68, top, 1.08], [-1.68, top, 1.08], [-1.68, top, -1.08]],
+      dimMat,
+    );
 
-    // 原点中心に置いてから正規化スケール
-    root.position.set(-center.x * norm, -center.y * norm, -center.z * norm);
-    root.scale.setScalar(norm);
-    return root;
-  }, [scene, color, model.scale]);
+    // ESP32 モジュール（左寄りの小箱・天面に浮かせる）
+    edges(new THREE.BoxGeometry(1.0, 0.16, 1.35), -0.95, 0.12, 0);
+
+    // メアンダアンテナ（基板左端のジグザグ = ESP の象徴）
+    const ax = -1.55;
+    const amp = 0.22;
+    let z = -0.62;
+    const dz = 0.18;
+    const ant: number[][] = [[ax, top, z]];
+    for (let i = 0; i < 7; i++) {
+      const x = i % 2 === 0 ? ax + amp : ax;
+      ant.push([x, top, z]);
+      z += dz;
+      ant.push([x, top, z]);
+    }
+    line(ant);
+
+    // 配線トレース（直角ルーティング）
+    const traces: number[][][] = [
+      [[-0.45, top, -0.35], [0.7, top, -0.35], [0.7, top, 0.5], [1.55, top, 0.5]],
+      [[-0.45, top, 0.25], [0.35, top, 0.25], [0.35, top, 0.9], [1.55, top, 0.9]],
+      [[-0.45, top, -0.7], [1.3, top, -0.7], [1.3, top, -0.95]],
+      [[-0.45, top, 0.0], [1.55, top, 0.0]],
+    ];
+    traces.forEach((t) => line(t));
+
+    // SMD 部品（小さな箱）
+    edges(new THREE.BoxGeometry(0.5, 0.1, 0.5), 0.95, top + 0.05, -0.55);
+    edges(new THREE.BoxGeometry(0.18, 0.08, 0.34), 0.45, top + 0.04, 0.62);
+    edges(new THREE.BoxGeometry(0.18, 0.08, 0.34), 0.72, top + 0.04, 0.62);
+
+    // ヘッダピン（長辺2列の点）
+    const pin: THREE.Vector3[] = [];
+    for (let i = 0; i < 15; i++) {
+      const x = -1.55 + (i * 3.1) / 14;
+      pin.push(new THREE.Vector3(x, top, -1.0), new THREE.Vector3(x, top, 1.0));
+    }
+    group.add(
+      new THREE.Points(
+        new THREE.BufferGeometry().setFromPoints(pin),
+        new THREE.PointsMaterial({ color: c, size: 0.07, transparent: true, opacity: 0.9, sizeAttenuation: true }),
+      ),
+    );
+
+    // ビア / パッド（トレース端の点）
+    const via = [[1.55, top, 0.5], [1.55, top, 0.9], [1.3, top, -0.95], [1.55, top, 0.0]].map(
+      (p) => new THREE.Vector3(p[0], p[1], p[2]),
+    );
+    group.add(
+      new THREE.Points(
+        new THREE.BufferGeometry().setFromPoints(via),
+        new THREE.PointsMaterial({ color: c, size: 0.11, transparent: true, opacity: 0.95, sizeAttenuation: true }),
+      ),
+    );
+
+    // 電流パルス（最長トレースを流れる発光点）
+    const pulsePath = new THREE.CatmullRomCurve3(
+      traces[0].map((p) => new THREE.Vector3(p[0], top, p[2])),
+      false,
+      'catmullrom',
+      0,
+    );
+    const pulse = new THREE.Points(
+      new THREE.BufferGeometry().setFromPoints([new THREE.Vector3()]),
+      new THREE.PointsMaterial({ color: c, size: 0.18, transparent: true, opacity: 1, sizeAttenuation: true }),
+    );
+    group.add(pulse);
+
+    // 斜めに傾けて天面を見せる
+    group.rotation.set(-0.52, 0, 0.08);
+    return { obj: group, pulse, pulsePath };
+  }, [color]);
 
   const spinRef = useRef<THREE.Group>(null);
+  const t = useRef(0);
   useFrame((_, dt) => {
-    if (!reduced && spinRef.current) spinRef.current.rotation.y += model.spin * dt;
+    if (reduced) return;
+    if (spinRef.current) spinRef.current.rotation.y += 0.16 * dt;
+    // パルスをトレース上で周回させる
+    t.current = (t.current + dt * 0.22) % 1;
+    const p = pulsePath.getPoint(t.current);
+    const attr = pulse.geometry.getAttribute('position') as THREE.BufferAttribute;
+    attr.setXYZ(0, p.x, p.y, p.z);
+    attr.needsUpdate = true;
+    (pulse.material as THREE.PointsMaterial).opacity = 0.4 + 0.6 * Math.sin(t.current * Math.PI);
   });
 
   return (
-    <group position={model.position}>
+    <group position={[2.0, 0, 0]}>
       <Float
-        speed={reduced ? 0 : model.floatSpeed}
-        rotationIntensity={reduced ? 0 : 0.25}
-        floatIntensity={reduced ? 0 : model.floatRange}
+        speed={reduced ? 0 : 1.1}
+        rotationIntensity={reduced ? 0 : 0.18}
+        floatIntensity={reduced ? 0 : 0.4}
       >
         <group ref={spinRef}>
-          <primitive object={normalized} />
+          <primitive object={obj} />
         </group>
       </Float>
     </group>
@@ -94,8 +170,8 @@ function Rig({ children, reduced }: { children: ReactNode; reduced: boolean }) {
 
   useFrame(() => {
     if (!ref.current || reduced) return;
-    ref.current.rotation.y = THREE.MathUtils.lerp(ref.current.rotation.y, target.current.x * 0.35, 0.04);
-    ref.current.rotation.x = THREE.MathUtils.lerp(ref.current.rotation.x, target.current.y * 0.2, 0.04);
+    ref.current.rotation.y = THREE.MathUtils.lerp(ref.current.rotation.y, target.current.x * 0.32, 0.04);
+    ref.current.rotation.x = THREE.MathUtils.lerp(ref.current.rotation.x, target.current.y * 0.18, 0.04);
   });
 
   return <group ref={ref}>{children}</group>;
@@ -116,11 +192,9 @@ function Scene({ reduced }: { reduced: boolean }) {
 
   return (
     <Rig reduced={reduced}>
-      {/* モデルは右寄り配置。狭い画面では右外に出るので中央寄せ＋縮小して収める */}
-      <group position-x={mobile ? -1.7 : 0} scale={mobile ? 0.8 : 1}>
-        {HERO_MODELS.map((m) => (
-          <WireModel key={m.name} model={m} color={color} reduced={reduced} />
-        ))}
+      {/* 右寄り配置。狭い画面では中央寄せ＋縮小して収める */}
+      <group position-x={mobile ? -1.9 : 0} scale={mobile ? 0.72 : 1}>
+        <EspBoard color={color} reduced={reduced} />
       </group>
     </Rig>
   );
@@ -160,6 +234,3 @@ export default function Hero3D() {
     </div>
   );
 }
-
-// ヒーロー表示時にすぐ出るよう先読み
-HERO_MODELS.forEach((m) => useGLTF.preload(m.path));
