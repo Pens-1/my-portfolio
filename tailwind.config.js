@@ -16,9 +16,9 @@ export default {
         'accent-dim': 'var(--accent-dim)',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Zen Kaku Gothic New', 'Archivo', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
-        display: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Archivo', 'Zen Kaku Gothic New', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         'display-xl': ['clamp(3rem, 8vw, 5.5rem)', { lineHeight: '1.02', letterSpacing: '-0.03em', fontWeight: '700' }],
