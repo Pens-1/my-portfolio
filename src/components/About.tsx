@@ -1,53 +1,64 @@
 import { ArrowUpRight } from 'lucide-react';
 
-// 実績（厳選・数字 or 第三者評価つき。「やってる」止まりは載せない）
-const ACHIEVEMENTS = [
-  { tag: 'リード', text: 'トモシゴト Design & Code lab. で22名・3チームを本番運用までリード' },
-  { tag: '成果', text: '部内シフト生成を数理最適化し、運用負担を90%削減' },
-  { tag: '採択', text: '公的スタートアップ支援 ¥500,000 採択（日本政策金融公庫 共催）' },
-  { tag: '受賞', text: '学内ベンチャーコンテスト M&A企業賞・地域信用金庫賞' },
-  { tag: '受賞', text: '学内ハッカソン データサイエンス賞' },
+// 領域（できること） — kotek7 の「領域」に相当
+const CAPABILITIES = [
+  'Web フロントエンド・バックエンド開発',
+  'ローカル LLM・AI エージェント / MCP サーバー',
+  '自動化・スクレイピングパイプライン',
+  '組み込みファームウェア（ESP32 / nRF52840）',
+  '電子回路・基板設計（KiCad・Python 自動生成）',
+  'インフラ・DevOps（Docker / Kubernetes / IaC）',
 ];
 
-// 使用技術（2段：書いて出荷した / 触った・補助的に使う）
-const STACK_PRO = [
-  'TypeScript', 'React', 'Next.js', 'Python', 'FastAPI', 'PostgreSQL',
-  'C/C++', 'ESP32', 'nRF52840', 'KiCad', 'MCP', 'Docker', 'n8n',
+// 使用技術（分野別ボックス） — kotek7 の Application Dev / Robotics … と同形式
+const STACKS = [
+  { label: 'Web・アプリ', items: ['TypeScript', 'React / Next.js', 'Python / FastAPI', 'PostgreSQL', 'Tailwind CSS', 'Docker'] },
+  { label: 'AI・自動化', items: ['Python', 'MCP / FastMCP', 'Ollama・ローカル LLM', 'n8n', 'Playwright'] },
+  { label: 'ハードウェア・ロボティクス', items: ['C / C++', 'ESP32 / nRF52840', 'KiCad', 'PlatformIO', 'ROS2'] },
+  { label: 'インフラ・DevOps', items: ['Kubernetes', 'Terraform', 'Cloudflare Workers', 'Nginx', 'Go'] },
 ];
-const STACK_TOUCHED = ['Go', 'Kubernetes', 'Terraform', 'Playwright', 'Ollama', 'ROS2'];
 
 const AFFILIATIONS = [
-  { label: 'DUFP', detail: '同志社大学公認フォーミュラチーム · 全日本学生フォーミュラ大会' },
-  { label: 'トモシゴト', detail: '同志社大学ローム記念館プロジェクト（Design & Code lab.）· リーダー' },
-  { label: 'DRC', detail: '同志社大学公認ロボット研究会 · 関西春ロボコン 2026' },
+  'トモシゴト Design & Code lab.（同志社大学ローム記念館プロジェクト・リーダー）',
+  '同志社大学ロボット研究会 DRC',
+  '同志社大学フォーミュラプロジェクト DUFP',
+  '同志社大学 理工学部 機械システム工学科',
 ];
 
-// 経歴（確実な年のみ）
 const TIMELINE = [
-  { period: '2024.04', text: '同志社大学 機械システム工学科 入学' },
-  { period: '2025.04', text: 'トモシゴト Design & Code lab. のリーダーに就任' },
+  { period: '2024.04', text: '同志社大学 理工学部 機械システム工学科 入学' },
+  { period: '2025.04', text: 'トモシゴト Design & Code lab. リーダーに就任' },
+];
+
+// 活動・受賞 — kotek7 の Activities に相当（実績は About 本体でなくここに集約）
+const AWARDS = [
+  '同志社ハッカソン — データサイエンス賞',
+  '同志社ベンチャーコンテスト — ストライク賞・京都中央信用金庫賞',
+  'スタートアップ支援 — 事業資金 ¥500,000 採択（日本政策金融公庫 共催）',
+];
+const ROBOCON = [
+  { period: '2026.03', text: '関西春ロボコン2026 — DRC「輪投げの達人」/ 制御系リーダー' },
 ];
 
 const LINKS = [
-  { label: 'GitHub', handle: 'Pens-1', href: 'https://github.com/Pens-1' },
-  { label: 'Zenn', handle: 'pockypen', href: 'https://zenn.dev/pockypen' },
+  { label: 'GitHub', handle: '@Pens-1', href: 'https://github.com/Pens-1' },
+  { label: 'Zenn', handle: '@pockypen', href: 'https://zenn.dev/pockypen' },
   { label: 'Email', handle: 'me@yamataku.dev', href: 'mailto:me@yamataku.dev' },
 ];
 
-const StackGroup = ({ label, items }: { label: string; items: string[] }) => (
-  <div>
-    <div className="font-mono text-[11px] text-fg-faint mb-2.5">{label}</div>
-    <div className="flex flex-wrap gap-1.5">
-      {items.map((s) => (
-        <span
-          key={s}
-          className="font-mono text-[11px] text-fg-muted border border-border px-2 py-0.5"
-        >
-          {s}
-        </span>
-      ))}
-    </div>
-  </div>
+const SectionLabel = ({ children }: { children: React.ReactNode }) => (
+  <div className="eyebrow mb-5">{children}</div>
+);
+
+const BulletList = ({ items }: { items: string[] }) => (
+  <ul className="space-y-2">
+    {items.map((it) => (
+      <li key={it} className="flex items-baseline gap-2.5 text-fg-muted leading-relaxed">
+        <span className="text-accent text-[10px] mt-1.5 flex-shrink-0">◦</span>
+        <span>{it}</span>
+      </li>
+    ))}
+  </ul>
 );
 
 const About = () => {
@@ -59,69 +70,96 @@ const About = () => {
           <h2 className="font-display text-display-lg text-fg">私について。</h2>
         </header>
 
-        {/* Intro — 1〜2文。学生であることは「在学中に」で1点だけ滲ませる */}
+        {/* Intro — 人柄＋できること＋学生は「在学しながら」で1点 */}
         <p className="max-w-2xl text-fg text-lg leading-relaxed mb-20">
           単調な作業を自動化し、<span className="text-accent">人が創造に集中できる</span>状態を作るエンジニア。
           同志社大学 機械システム工学科に在学しながら、プロダクト開発・受託・22名チームのリードを並行している。
         </p>
 
         <div className="space-y-16">
-          {/* 実績 */}
+          {/* 領域 */}
           <div>
-            <div className="eyebrow mb-5">実績</div>
-            <ul className="border-t border-border">
-              {ACHIEVEMENTS.map((a) => (
-                <li
-                  key={a.text}
-                  className="grid md:grid-cols-[6rem_1fr] gap-1 md:gap-6 py-4 border-b border-border"
-                >
-                  <span className="font-mono text-[11px] text-accent uppercase tracking-[0.12em] md:pt-0.5">
-                    {a.tag}
-                  </span>
-                  <span className="text-fg leading-relaxed">{a.text}</span>
+            <SectionLabel>領域</SectionLabel>
+            <ul className="grid sm:grid-cols-2 gap-x-10 gap-y-2.5">
+              {CAPABILITIES.map((c) => (
+                <li key={c} className="flex items-baseline gap-2.5 text-fg-muted leading-relaxed">
+                  <span className="text-accent text-[10px] mt-1.5 flex-shrink-0">◦</span>
+                  <span>{c}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* 使用技術 */}
+          {/* 使用技術（分野別ボックス） */}
           <div>
-            <div className="eyebrow mb-5">使用技術</div>
-            <div className="space-y-5">
-              <StackGroup label="書いて出荷した" items={STACK_PRO} />
-              <StackGroup label="触った・補助的に使う" items={STACK_TOUCHED} />
-            </div>
-          </div>
-
-          {/* 所属 */}
-          <div>
-            <div className="eyebrow mb-5">所属</div>
-            <div className="space-y-2.5">
-              {AFFILIATIONS.map((a) => (
-                <div key={a.label} className="flex items-baseline gap-4 text-sm">
-                  <span className="font-mono text-[11px] text-fg-faint w-24 flex-shrink-0">{a.label}</span>
-                  <span className="text-fg-muted leading-relaxed">{a.detail}</span>
+            <SectionLabel>使用技術</SectionLabel>
+            <div className="grid md:grid-cols-2 gap-4">
+              {STACKS.map((s) => (
+                <div key={s.label} className="border border-border p-5 bg-elevated/40">
+                  <div className="font-mono text-[11px] text-accent uppercase tracking-[0.12em] mb-3">
+                    {s.label}
+                  </div>
+                  <ul className="space-y-1.5">
+                    {s.items.map((i) => (
+                      <li key={i} className="flex items-baseline gap-2 font-mono text-[13px] text-fg-muted">
+                        <span className="text-fg-faint flex-shrink-0">·</span>
+                        <span>{i}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               ))}
             </div>
           </div>
 
+          {/* 所属 */}
+          <div>
+            <SectionLabel>所属</SectionLabel>
+            <BulletList items={AFFILIATIONS} />
+          </div>
+
           {/* 経歴 */}
           <div>
-            <div className="eyebrow mb-5">経歴</div>
+            <SectionLabel>経歴</SectionLabel>
             <div className="border-t border-border">
               {TIMELINE.map((t) => (
-                <div key={t.text} className="flex items-baseline gap-4 py-3 border-b border-border">
-                  <span className="font-mono text-[11px] text-fg-faint w-24 flex-shrink-0 tabular-nums">{t.period}</span>
+                <div key={t.text} className="flex items-baseline gap-5 py-3 border-b border-border">
+                  <span className="font-mono text-[11px] text-fg-faint w-20 flex-shrink-0 tabular-nums">
+                    {t.period}
+                  </span>
                   <span className="text-fg-muted text-sm leading-relaxed">{t.text}</span>
                 </div>
               ))}
             </div>
           </div>
 
+          {/* 活動・受賞 */}
+          <div>
+            <SectionLabel>活動・受賞</SectionLabel>
+            <div className="space-y-6">
+              <div>
+                <div className="font-mono text-[11px] text-fg-faint mb-2.5">コンテスト・受賞</div>
+                <BulletList items={AWARDS} />
+              </div>
+              <div>
+                <div className="font-mono text-[11px] text-fg-faint mb-2.5">ロボコン</div>
+                <ul className="space-y-2">
+                  {ROBOCON.map((r) => (
+                    <li key={r.text} className="flex items-baseline gap-3 text-fg-muted text-sm leading-relaxed">
+                      <span className="font-mono text-[11px] text-fg-faint tabular-nums flex-shrink-0">
+                        {r.period}
+                      </span>
+                      <span>{r.text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+
           {/* リンク */}
           <div>
-            <div className="eyebrow mb-5">リンク</div>
+            <SectionLabel>リンク</SectionLabel>
             <div className="border-t border-border">
               {LINKS.map((l) => (
                 <a
@@ -131,7 +169,7 @@ const About = () => {
                   rel={l.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                   className="group flex items-baseline gap-4 py-3 border-b border-border hover:bg-elevated/30 px-2 -mx-2 transition-colors"
                 >
-                  <span className="font-mono text-[11px] text-fg-faint w-24 flex-shrink-0">{l.label}</span>
+                  <span className="font-mono text-[11px] text-fg-faint w-20 flex-shrink-0">{l.label}</span>
                   <span className="font-mono text-sm text-fg-muted group-hover:text-accent transition-colors">
                     {l.handle}
                   </span>
