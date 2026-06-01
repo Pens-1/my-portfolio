@@ -21,3 +21,9 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# local tooling / reference screenshots
+.playwright-mcp/
+/kotek-home.png
+/taigasaito-view.png
+/redesign-*.png

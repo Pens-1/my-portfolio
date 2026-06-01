@@ -58,16 +58,15 @@ const Contact = () => {
     'w-full bg-transparent border border-border px-4 py-3 text-fg placeholder-fg-faint font-sans text-sm focus:border-accent focus:outline-none transition-colors';
 
   return (
-    <section id="contact" className="py-28 md:py-36 border-t border-border">
+    <section id="contact" className="py-32 md:py-44 border-t border-border">
       <div className="container-prose">
         <header className="mb-12">
-          <div className="eyebrow mb-3">05. Contact</div>
+          <div className="eyebrow mb-3">04 / Contact</div>
           <h2 className="font-display text-display-lg text-fg mb-4">
-            Get in touch.
+            話しましょう。
           </h2>
           <p className="text-fg-muted max-w-xl">
-            業務自動化・データ処理・AI 統合システムの開発相談、フリーランス案件の打診、
-            協業の声かけ、どれでも歓迎します。
+            開発相談・受託・協業、お気軽に。
           </p>
         </header>
 
@@ -75,7 +74,7 @@ const Contact = () => {
           <div className="border border-accent/50 bg-accent-dim p-8 max-w-xl">
             <CheckCircle className="w-10 h-10 text-accent mb-4" />
             <h3 className="font-display text-xl font-semibold text-fg mb-2">
-              Message sent.
+              送信しました。
             </h3>
             <p className="text-fg-muted text-sm mb-5">
               ありがとうございます。確認次第ご返信します。
@@ -84,7 +83,7 @@ const Contact = () => {
               onClick={() => setStatus('idle')}
               className="font-mono text-[11px] text-accent uppercase tracking-[0.15em] hover:underline underline-offset-4"
             >
-              Send another
+              もう一通送る
             </button>
           </div>
         ) : (
@@ -95,7 +94,7 @@ const Contact = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="Name"
+                placeholder="お名前"
                 required
                 disabled={status === 'submitting'}
                 className={inputClass}
@@ -105,7 +104,7 @@ const Contact = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="Email"
+                placeholder="メールアドレス"
                 required
                 disabled={status === 'submitting'}
                 className={inputClass}
@@ -116,7 +115,7 @@ const Contact = () => {
               name="message"
               value={formData.message}
               onChange={handleChange}
-              placeholder="Message"
+              placeholder="メッセージ"
               required
               rows={6}
               disabled={status === 'submitting'}
@@ -140,11 +139,11 @@ const Contact = () => {
               {status === 'submitting' ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Sending...
+                  送信中…
                 </>
               ) : (
                 <>
-                  Send message
+                  送信する
                   <Send className="w-4 h-4" />
                 </>
               )}

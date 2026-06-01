@@ -8,78 +8,71 @@ const Home = () => {
   return (
     <section
       id="home"
-      className="relative min-h-[94vh] flex items-center pt-28 pb-20 overflow-hidden"
+      className="relative min-h-screen flex items-center overflow-hidden"
     >
+      {/* 背景全面 3D */}
+      <div className="absolute inset-0 z-0">
+        <Suspense fallback={null}>
+          <Hero3D />
+        </Suspense>
+      </div>
+
+      {/* 可読性ビネット: 左を沈めてコピーを読ませる（--ink はテーマ追従で黒/白） */}
+      <div
+        className="absolute inset-0 z-[1] pointer-events-none bg-gradient-to-r from-ink via-ink/85 to-ink/30 md:to-transparent"
+        aria-hidden="true"
+      />
+      {/* 上下を軽く締める（nav とセクション境界） */}
+      <div
+        className="absolute inset-0 z-[1] pointer-events-none bg-gradient-to-b from-ink/50 via-transparent to-ink/60"
+        aria-hidden="true"
+      />
+
+      {/* コピー（左・上層・必要な情報だけ） */}
       <div className="container-prose relative z-10 w-full">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          {/* 左: コピー（必要な情報だけ） */}
-          <div>
-            <p className="eyebrow mb-5 animate-fade-in">
-              <span aria-hidden="true" className="mr-1">◆</span>
-              Open to entrepreneur internships & engineering roles
-            </p>
+        <div className="max-w-2xl">
+          <p className="eyebrow mb-5 animate-fade-in">
+            <span aria-hidden="true" className="mr-1">◆</span>
+            受託 &amp; プロダクト開発
+          </p>
 
-            <h1
-              className="font-display text-display-xl text-fg mb-6 animate-fade-up"
-              style={{ animationDelay: '80ms' }}
+          <h1
+            className="font-display text-display-xl text-fg mb-6 animate-fade-up"
+            style={{ animationDelay: '80ms' }}
+          >
+            回路基板から<br className="hidden sm:block" />
+            本番 Web まで、<br className="hidden sm:block" />
+            <span className="text-accent">一人で通す</span>。
+          </h1>
+
+          {/* CTA は2つに絞る（GitHub はナビにある） */}
+          <div
+            className="flex flex-wrap items-center gap-3 animate-fade-up"
+            style={{ animationDelay: '240ms' }}
+          >
+            <a
+              href="#works"
+              className="group inline-flex items-center gap-2 bg-accent text-ink font-medium px-5 py-2.5 text-sm transition-transform hover:-translate-y-0.5"
             >
-              I ship products, <br className="hidden sm:block" />
-              and I lead teams <span className="text-accent">that do too</span>.
-            </h1>
-
-            <p
-              className="text-fg-muted text-lg max-w-md leading-relaxed mb-9 animate-fade-up"
-              style={{ animationDelay: '160ms' }}
+              作品を見る
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+            </a>
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 border border-border-strong text-fg px-5 py-2.5 text-sm hover:border-accent hover:text-accent transition-colors"
             >
-              回路基板から本番 Web まで<span className="text-fg">一人で通す</span>エンジニア。
-              個人開発の{' '}
-              <a
-                href="https://grades.fullweak.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="link-accent"
-              >
-                GradeS
-              </a>
-              {' '}は公開1週間で1,200ユーザー、学内では22名のラボをリード。
-            </p>
-
-            {/* CTA は2つに絞る（GitHub はナビにある） */}
-            <div
-              className="flex flex-wrap items-center gap-3 animate-fade-up"
-              style={{ animationDelay: '240ms' }}
+              <Mail className="w-4 h-4" />
+              連絡する
+            </a>
+            <a
+              href="https://github.com/Pens-1"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              className="inline-flex items-center gap-2 text-fg-muted px-2 py-2.5 text-sm hover:text-accent transition-colors"
             >
-              <a
-                href="#works"
-                className="group inline-flex items-center gap-2 bg-accent text-ink font-medium px-5 py-2.5 text-sm transition-transform hover:-translate-y-0.5"
-              >
-                View work
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-              </a>
-              <a
-                href="#contact"
-                className="inline-flex items-center gap-2 border border-border-strong text-fg px-5 py-2.5 text-sm hover:border-accent hover:text-accent transition-colors"
-              >
-                <Mail className="w-4 h-4" />
-                Contact
-              </a>
-              <a
-                href="https://github.com/Pens-1"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub"
-                className="inline-flex items-center gap-2 text-fg-muted px-2 py-2.5 text-sm hover:text-accent transition-colors"
-              >
-                <Github className="w-4 h-4" />
-              </a>
-            </div>
-          </div>
-
-          {/* 右: 3D（モバイルは下に控えめ表示） */}
-          <div className="relative h-[40vh] lg:h-[64vh] -mx-6 md:mx-0 order-last">
-            <Suspense fallback={null}>
-              <Hero3D />
-            </Suspense>
+              <Github className="w-4 h-4" />
+            </a>
           </div>
         </div>
       </div>

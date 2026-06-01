@@ -48,23 +48,23 @@ export const getWorkById = (id: number): Work | undefined => {
 
 export const GROUP_META: Record<WorkGroup, { label: string; description: string }> = {
   live: {
-    label: 'Live Products',
+    label: '実運用プロダクト',
     description: 'Shipped to real users.',
   },
   automation: {
-    label: 'Local LLM & Automation',
+    label: 'ローカルLLM・自動化',
     description: 'AI agents, MCP servers, scraping pipelines.',
   },
   hardware: {
-    label: 'Hardware & Embedded',
+    label: 'ハードウェア・組込み',
     description: 'ESP32, nRF52840, PCB design.',
   },
   ml: {
-    label: 'ML & Optimization',
+    label: '機械学習・最適化',
     description: 'Reinforcement learning, matching algorithms, constraint solving.',
   },
   web: {
-    label: 'Full-Stack Web',
+    label: 'フルスタックWeb',
     description: 'Databases, APIs, interfaces.',
   },
 };

@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Float, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { HERO_MODELS, readAccent, type SceneModel } from '../lib/scene3d';
@@ -103,6 +103,8 @@ function Rig({ children, reduced }: { children: ReactNode; reduced: boolean }) {
 
 function Scene({ reduced }: { reduced: boolean }) {
   const [color, setColor] = useState('#7cf7d6');
+  const width = useThree((s) => s.size.width);
+  const mobile = width < 768;
 
   // テーマ切替（html.light クラスの付け外し）に追従してアクセント色を更新
   useEffect(() => {
@@ -114,9 +116,12 @@ function Scene({ reduced }: { reduced: boolean }) {
 
   return (
     <Rig reduced={reduced}>
-      {HERO_MODELS.map((m) => (
-        <WireModel key={m.name} model={m} color={color} reduced={reduced} />
-      ))}
+      {/* モデルは右寄り配置。狭い画面では右外に出るので中央寄せ＋縮小して収める */}
+      <group position-x={mobile ? -1.7 : 0} scale={mobile ? 0.8 : 1}>
+        {HERO_MODELS.map((m) => (
+          <WireModel key={m.name} model={m} color={color} reduced={reduced} />
+        ))}
+      </group>
     </Rig>
   );
 }

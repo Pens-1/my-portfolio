@@ -23,13 +23,15 @@ export interface SceneModel {
 
 // 各モデルはロード時にバウンディングボックスで正規化されるので、
 // glb 固有のサイズ差は気にしなくてよい（scale は相対的な微調整のみ）。
+// 配置方針: ヒーロー背景全面に漂わせる。テキストは左に来るので、
+// モデルは中央〜右寄り（x 正側）に縦へ散らし、奥行き(z)で重なりを作る。
 export const HERO_MODELS: SceneModel[] = [
   {
     name: 'pcb',
     path: '/models/pcb.glb',
     label: 'Hardware · PCB',
-    position: [0.4, 2.4, 0],
-    scale: 0.78,
+    position: [2.7, 2.1, -1],
+    scale: 0.7,
     spin: 0.35,
     floatSpeed: 1.4,
     floatRange: 0.35,
@@ -38,8 +40,8 @@ export const HERO_MODELS: SceneModel[] = [
     name: 'robot',
     path: '/models/robot.glb',
     label: 'Robotics',
-    position: [-0.3, 0.1, 0],
-    scale: 1.05,
+    position: [3.1, 0.2, 0],
+    scale: 0.95,
     spin: 0.22,
     floatSpeed: 1.0,
     floatRange: 0.45,
@@ -48,8 +50,8 @@ export const HERO_MODELS: SceneModel[] = [
     name: 'car',
     path: '/models/car.glb',
     label: 'Vehicle',
-    position: [0.4, -2.3, 0],
-    scale: 0.92,
+    position: [2.4, -2.1, -0.6],
+    scale: 0.85,
     spin: -0.28,
     floatSpeed: 1.2,
     floatRange: 0.35,
