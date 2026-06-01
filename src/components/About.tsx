@@ -17,9 +17,15 @@ const STACK_PRO = [
 const STACK_TOUCHED = ['Go', 'Kubernetes', 'Terraform', 'Playwright', 'Ollama', 'ROS2'];
 
 const AFFILIATIONS = [
-  { label: 'DUFP', detail: '大学公認フォーミュラチーム · 全日本学生フォーミュラ大会' },
-  { label: 'トモシゴト', detail: '学内プロダクト開発プロジェクト（Design & Code lab.）· リーダー' },
-  { label: 'DRC', detail: '大学公認ロボット研究会 · 関西春ロボコン 2026' },
+  { label: 'DUFP', detail: '同志社大学公認フォーミュラチーム · 全日本学生フォーミュラ大会' },
+  { label: 'トモシゴト', detail: '同志社大学ローム記念館プロジェクト（Design & Code lab.）· リーダー' },
+  { label: 'DRC', detail: '同志社大学公認ロボット研究会 · 関西春ロボコン 2026' },
+];
+
+// 経歴（確実な年のみ）
+const TIMELINE = [
+  { period: '2024.04', text: '同志社大学 機械システム工学科 入学' },
+  { period: '2025.04', text: 'トモシゴト Design & Code lab. のリーダーに就任' },
 ];
 
 const LINKS = [
@@ -56,7 +62,7 @@ const About = () => {
         {/* Intro — 1〜2文。学生であることは「在学中に」で1点だけ滲ませる */}
         <p className="max-w-2xl text-fg text-lg leading-relaxed mb-20">
           単調な作業を自動化し、<span className="text-accent">人が創造に集中できる</span>状態を作るエンジニア。
-          私立大学 機械システム工学科に在学しながら、プロダクト開発・受託・22名チームのリードを並行している。
+          同志社大学 機械システム工学科に在学しながら、プロダクト開発・受託・22名チームのリードを並行している。
         </p>
 
         <div className="space-y-16">
@@ -95,6 +101,19 @@ const About = () => {
                 <div key={a.label} className="flex items-baseline gap-4 text-sm">
                   <span className="font-mono text-[11px] text-fg-faint w-24 flex-shrink-0">{a.label}</span>
                   <span className="text-fg-muted leading-relaxed">{a.detail}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 経歴 */}
+          <div>
+            <div className="eyebrow mb-5">経歴</div>
+            <div className="border-t border-border">
+              {TIMELINE.map((t) => (
+                <div key={t.text} className="flex items-baseline gap-4 py-3 border-b border-border">
+                  <span className="font-mono text-[11px] text-fg-faint w-24 flex-shrink-0 tabular-nums">{t.period}</span>
+                  <span className="text-fg-muted text-sm leading-relaxed">{t.text}</span>
                 </div>
               ))}
             </div>
