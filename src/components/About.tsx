@@ -26,15 +26,16 @@ const AFFILIATIONS = [
 ];
 
 const TIMELINE = [
+  { period: '2023.夏', text: 'カナダ留学（高校3年）' },
   { period: '2024.04', text: '同志社大学 理工学部 機械システム工学科 入学' },
   { period: '2025.04', text: 'トモシゴト Design & Code lab. リーダーに就任' },
 ];
 
 // 活動・受賞 — kotek7 の Activities に相当（実績は About 本体でなくここに集約）
 const AWARDS = [
-  '同志社ハッカソン — データサイエンス賞',
-  '同志社ベンチャーコンテスト — ストライク賞・京都中央信用金庫賞',
-  'スタートアップ支援 — 事業資金 ¥500,000 採択（日本政策金融公庫 共催）',
+  { period: '2026.02', text: '同志社ハッカソン（DDASH Hacks）— データサイエンス賞' },
+  { period: '', text: '同志社ベンチャーコンテスト — ストライク賞・京都中央信用金庫賞' },
+  { period: '', text: 'スタートアップ支援 — 事業資金 ¥500,000 採択（日本政策金融公庫 共催）' },
 ];
 const ROBOCON = [
   { period: '2026.03', text: '関西春ロボコン2026 — DRC「輪投げの達人」/ 制御系リーダー' },
@@ -139,14 +140,23 @@ const About = () => {
             <div className="space-y-6">
               <div>
                 <div className="font-mono text-[11px] text-fg-faint mb-2.5">コンテスト・受賞</div>
-                <BulletList items={AWARDS} />
+                <ul className="space-y-2">
+                  {AWARDS.map((a) => (
+                    <li key={a.text} className="flex items-baseline gap-3 text-fg-muted text-sm leading-relaxed">
+                      <span className="font-mono text-[11px] text-fg-faint tabular-nums w-16 flex-shrink-0">
+                        {a.period || '—'}
+                      </span>
+                      <span>{a.text}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
               <div>
                 <div className="font-mono text-[11px] text-fg-faint mb-2.5">ロボコン</div>
                 <ul className="space-y-2">
                   {ROBOCON.map((r) => (
                     <li key={r.text} className="flex items-baseline gap-3 text-fg-muted text-sm leading-relaxed">
-                      <span className="font-mono text-[11px] text-fg-faint tabular-nums flex-shrink-0">
+                      <span className="font-mono text-[11px] text-fg-faint tabular-nums w-16 flex-shrink-0">
                         {r.period}
                       </span>
                       <span>{r.text}</span>
