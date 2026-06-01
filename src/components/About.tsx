@@ -26,7 +26,7 @@ const AFFILIATIONS = [
 ];
 
 const TIMELINE = [
-  { period: '2023.夏', text: 'カナダ留学（高校3年）' },
+  { period: '2023.07', text: 'カナダ留学（高校3年）' },
   { period: '2024.04', text: '同志社大学 理工学部 機械システム工学科 入学' },
   { period: '2025.04', text: 'トモシゴト Design & Code lab. リーダーに就任' },
 ];
