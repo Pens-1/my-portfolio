@@ -1,197 +1,127 @@
-import { useState } from 'react';
-import { Github, ChevronDown } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
-// 託されてきた役割（先頭3件をデフォルト表示、残りは折りたたみ）
-const TRUSTED = [
-  { tag: 'リード', title: '学内ラボ 第23期', detail: '22名・3チームを本番運用までリード' },
-  { tag: '受賞', title: '学内ハッカソン データサイエンス賞', detail: '' },
-  { tag: '採択', title: '公的スタートアップ支援', detail: '¥500,000 交付・日本政策金融公庫 共催' },
-  { tag: '受賞', title: '学内ベンチャーコンテスト', detail: 'M&A 賞・地域金融機関賞' },
-  { tag: '連携', title: '大手製造業', detail: 'TDD / スキーマ駆動への移行支援' },
+// 実績（厳選・数字 or 第三者評価つき。「やってる」止まりは載せない）
+const ACHIEVEMENTS = [
+  { tag: 'リード', text: 'トモシゴト Design & Code lab. で22名・3チームを本番運用までリード' },
+  { tag: '成果', text: '部内シフト生成を数理最適化し、運用負担を90%削減' },
+  { tag: '採択', text: '公的スタートアップ支援 ¥500,000 採択（日本政策金融公庫 共催）' },
+  { tag: '受賞', text: '学内ベンチャーコンテスト M&A企業賞・地域信用金庫賞' },
+  { tag: '受賞', text: '学内ハッカソン データサイエンス賞' },
 ];
+
+// 使用技術（2段：書いて出荷した / 触った・補助的に使う）
+const STACK_PRO = [
+  'TypeScript', 'React', 'Next.js', 'Python', 'FastAPI', 'PostgreSQL',
+  'C/C++', 'ESP32', 'nRF52840', 'KiCad', 'MCP', 'Docker', 'n8n',
+];
+const STACK_TOUCHED = ['Go', 'Kubernetes', 'Terraform', 'Playwright', 'Ollama', 'ROS2'];
 
 const AFFILIATIONS = [
   { label: 'DUFP', detail: '大学公認フォーミュラチーム · 全日本学生フォーミュラ大会' },
-  { label: 'トモシゴト', detail: '学内プロダクト開発プロジェクト（Design & Code）· リーダー' },
-  { label: 'DRC', detail: '大学公認ロボットサークル · 関西春ロボコン 2026' },
+  { label: 'トモシゴト', detail: '学内プロダクト開発プロジェクト（Design & Code lab.）· リーダー' },
+  { label: 'DRC', detail: '大学公認ロボット研究会 · 関西春ロボコン 2026' },
 ];
 
-// デフォルトで見せる代表技術（全スタックは折りたたみの中）
-const KEY_STACK = [
-  'TypeScript', 'React', 'Python', 'FastAPI',
-  'PostgreSQL', 'ESP32', 'KiCad', 'MCP',
+const LINKS = [
+  { label: 'GitHub', handle: 'Pens-1', href: 'https://github.com/Pens-1' },
+  { label: 'Zenn', handle: 'pockypen', href: 'https://zenn.dev/pockypen' },
+  { label: 'Email', handle: 'me@yamataku.dev', href: 'mailto:me@yamataku.dev' },
 ];
 
-const DOMAINS = [
-  {
-    name: 'Web & プロダクト',
-    summary: '実ユーザーに届くプロダクト。',
-    stack: ['TypeScript', 'React', 'Next.js', 'Python', 'FastAPI', 'PostgreSQL', 'Tailwind CSS', 'Vite'],
-  },
-  {
-    name: 'ローカル LLM & 自動化',
-    summary: 'AI エージェント・MCP・スクレイピング。',
-    stack: ['Python', 'Ollama', 'Qwen', 'faster-whisper', 'MCP', 'Playwright', 'n8n', 'Function Calling'],
-  },
-  {
-    name: 'ハードウェア & 組込み',
-    summary: 'PCB・ファーム・物理世界の MCP。',
-    stack: ['C/C++', 'ESP32', 'nRF52840', 'PlatformIO', 'KiCad', 'BLE / WiFi', 'ZMK', 'FastMCP'],
-  },
-  {
-    name: 'インフラ & DevOps',
-    summary: 'コンテナ・エッジ・オンプレ。',
-    stack: ['Docker', 'Kubernetes', 'Terraform', 'Cloudflare Workers', 'Nginx', 'OpenMediaVault'],
-  },
-];
-
-const CLIENT_WORK = [
-  'Google 検索結果の自動収集（継続依頼）',
-  'Gemini API でリスト自動生成',
-  'メール存在確認ツール（SMTP・1,000件一括）',
-  'スクショ → クラウド自動保存（Go）',
-  '生成 AI による時系列データ分析環境',
-  'Graph API × GAS でデバイスデータ取得',
-  'LLM アプリ開発支援',
-];
-
-const RoleRow = ({ tag, title, detail }: { tag: string; title: string; detail: string }) => (
-  <li className="grid md:grid-cols-[6rem_1fr] gap-1 md:gap-6 py-4 border-b border-border">
-    <span className="font-mono text-[11px] text-accent uppercase tracking-[0.12em] md:pt-0.5">{tag}</span>
-    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
-      <span className="font-display font-semibold text-fg">{title}</span>
-      {detail && <span className="text-fg-muted text-sm">{detail}</span>}
+const StackGroup = ({ label, items }: { label: string; items: string[] }) => (
+  <div>
+    <div className="font-mono text-[11px] text-fg-faint mb-2.5">{label}</div>
+    <div className="flex flex-wrap gap-1.5">
+      {items.map((s) => (
+        <span
+          key={s}
+          className="font-mono text-[11px] text-fg-muted border border-border px-2 py-0.5"
+        >
+          {s}
+        </span>
+      ))}
     </div>
-  </li>
+  </div>
 );
 
 const About = () => {
-  const [open, setOpen] = useState(false);
-  const primary = TRUSTED.slice(0, 3);
-  const rest = TRUSTED.slice(3);
-
   return (
     <section id="about" className="py-32 md:py-44 border-t border-border">
       <div className="container-prose">
         <header className="mb-14">
           <div className="eyebrow mb-3">03 / About</div>
-          <h2 className="font-display text-display-lg text-fg mb-4">私について。</h2>
+          <h2 className="font-display text-display-lg text-fg">私について。</h2>
         </header>
 
-        {/* Intro — 1文 */}
-        <div className="max-w-2xl mb-16">
-          <p className="text-fg text-lg leading-relaxed">
-            単調な作業を自動化し、<span className="text-accent">人が創造に集中できる</span>状態を作るエンジニア。
-          </p>
-          <a
-            href="https://github.com/Pens-1"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-7 inline-flex items-center gap-2 border border-border-strong text-fg px-4 py-2 text-sm hover:border-accent hover:text-accent transition-colors"
-          >
-            <Github className="w-4 h-4" />
-            GitHub / Pens-1
-          </a>
-        </div>
+        {/* Intro — 1〜2文。学生であることは「在学中に」で1点だけ滲ませる */}
+        <p className="max-w-2xl text-fg text-lg leading-relaxed mb-20">
+          単調な作業を自動化し、<span className="text-accent">人が創造に集中できる</span>状態を作るエンジニア。
+          私立大学 機械システム工学科に在学しながら、プロダクト開発・受託・22名チームのリードを並行している。
+        </p>
 
-        {/* 主要実績（トップ3だけ） */}
-        <div className="mb-14">
-          <div className="eyebrow mb-5">託されてきた役割</div>
-          <ul className="border-t border-border">
-            {primary.map((t) => (
-              <RoleRow key={t.title} {...t} />
-            ))}
-          </ul>
-        </div>
-
-        {/* 主な技術（代表タグ1行） */}
-        <div className="mb-14">
-          <div className="eyebrow mb-4">主な技術</div>
-          <div className="flex flex-wrap gap-1.5">
-            {KEY_STACK.map((s) => (
-              <span
-                key={s}
-                className="font-mono text-[11px] text-fg-muted border border-border px-2 py-0.5"
-              >
-                {s}
-              </span>
-            ))}
+        <div className="space-y-16">
+          {/* 実績 */}
+          <div>
+            <div className="eyebrow mb-5">実績</div>
+            <ul className="border-t border-border">
+              {ACHIEVEMENTS.map((a) => (
+                <li
+                  key={a.text}
+                  className="grid md:grid-cols-[6rem_1fr] gap-1 md:gap-6 py-4 border-b border-border"
+                >
+                  <span className="font-mono text-[11px] text-accent uppercase tracking-[0.12em] md:pt-0.5">
+                    {a.tag}
+                  </span>
+                  <span className="text-fg leading-relaxed">{a.text}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
 
-        {/* もっと見る — 残りはすべてここに隠す */}
-        <button
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          className="group inline-flex items-center gap-2 font-mono text-[11px] text-fg-faint hover:text-accent tracking-[0.12em] uppercase transition-colors"
-        >
-          {open ? '閉じる' : 'もっと見る'}
-          <ChevronDown className={`w-3.5 h-3.5 transition-transform ${open ? 'rotate-180' : ''}`} />
-        </button>
-
-        {open && (
-          <div className="animate-fade-in mt-12 space-y-16">
-            {/* 残りの役割 + 所属 */}
-            <div>
-              <div className="eyebrow mb-5">その他の実績・所属</div>
-              <ul className="border-t border-border">
-                {rest.map((t) => (
-                  <RoleRow key={t.title} {...t} />
-                ))}
-              </ul>
-              <div className="mt-6 space-y-2">
-                {AFFILIATIONS.map((a) => (
-                  <div key={a.label} className="flex items-baseline gap-3 text-sm">
-                    <span className="font-mono text-[11px] text-fg-faint w-12 flex-shrink-0">{a.label}</span>
-                    <span className="text-fg-muted leading-relaxed">{a.detail}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* 技術スタック（分野別・全部） */}
-            <div>
-              <div className="eyebrow mb-4">技術スタック（分野別）</div>
-              <div className="grid md:grid-cols-2 gap-4">
-                {DOMAINS.map((d) => (
-                  <div key={d.name} className="border border-border p-5 bg-elevated/40">
-                    <div className="font-display font-semibold text-fg">{d.name}</div>
-                    <p className="font-mono text-[11px] text-fg-faint mt-1 mb-3 leading-relaxed">{d.summary}</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {d.stack.map((s) => (
-                        <span
-                          key={s}
-                          className="font-mono text-[10px] text-fg-muted border border-border px-1.5 py-0.5"
-                        >
-                          {s}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-4 font-mono text-[11px] text-fg-faint">
-                資格: Python 3 エンジニア認定基礎試験
-              </div>
-            </div>
-
-            {/* 受託実績 */}
-            <div>
-              <div className="eyebrow mb-4">受託実績 · CrowdWorks</div>
-              <p className="text-fg-muted text-sm mb-5 max-w-2xl">
-                自動化・Web・AI 統合を軸に継続受託。
-              </p>
-              <ul className="space-y-2">
-                {CLIENT_WORK.map((c, i) => (
-                  <li key={i} className="flex items-start gap-3 font-mono text-sm text-fg-muted">
-                    <span className="text-accent mt-0.5">◦</span>
-                    <span>{c}</span>
-                  </li>
-                ))}
-              </ul>
+          {/* 使用技術 */}
+          <div>
+            <div className="eyebrow mb-5">使用技術</div>
+            <div className="space-y-5">
+              <StackGroup label="書いて出荷した" items={STACK_PRO} />
+              <StackGroup label="触った・補助的に使う" items={STACK_TOUCHED} />
             </div>
           </div>
-        )}
+
+          {/* 所属 */}
+          <div>
+            <div className="eyebrow mb-5">所属</div>
+            <div className="space-y-2.5">
+              {AFFILIATIONS.map((a) => (
+                <div key={a.label} className="flex items-baseline gap-4 text-sm">
+                  <span className="font-mono text-[11px] text-fg-faint w-24 flex-shrink-0">{a.label}</span>
+                  <span className="text-fg-muted leading-relaxed">{a.detail}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* リンク */}
+          <div>
+            <div className="eyebrow mb-5">リンク</div>
+            <div className="border-t border-border">
+              {LINKS.map((l) => (
+                <a
+                  key={l.label}
+                  href={l.href}
+                  target={l.href.startsWith('http') ? '_blank' : undefined}
+                  rel={l.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  className="group flex items-baseline gap-4 py-3 border-b border-border hover:bg-elevated/30 px-2 -mx-2 transition-colors"
+                >
+                  <span className="font-mono text-[11px] text-fg-faint w-24 flex-shrink-0">{l.label}</span>
+                  <span className="font-mono text-sm text-fg-muted group-hover:text-accent transition-colors">
+                    {l.handle}
+                  </span>
+                  <ArrowUpRight className="w-3 h-3 text-fg-faint group-hover:text-accent ml-auto transition-colors" />
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
