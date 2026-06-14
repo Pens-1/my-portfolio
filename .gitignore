@@ -31,3 +31,6 @@ dist-ssr
 /hero-*.png
 /kotek-*.png
 /esp-*.png
+
+# 生成素材の元ファイル（連番化前のmp4/png）
+assets-src/

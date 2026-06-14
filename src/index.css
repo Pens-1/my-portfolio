@@ -3,21 +3,8 @@
 @tailwind utilities;
 
 @layer base {
+  /* 既定 = ライト（白いクリーンルームが世界観の基準。ダークは Phase 2 の減光モード） */
   :root {
-    --ink: #0a0a0a;
-    --surface: #111111;
-    --elevated: #161616;
-    --border: rgba(255, 255, 255, 0.08);
-    --border-strong: rgba(255, 255, 255, 0.14);
-    --fg: #e8e8e8;
-    --fg-muted: #9a9a9a;
-    --fg-faint: #5c5c5c;
-    --accent: #7cf7d6;
-    --accent-dim: rgba(124, 247, 214, 0.12);
-    color-scheme: dark;
-  }
-
-  :root.light {
     --ink: #fafaf9;
     --surface: #f4f4f2;
     --elevated: #eeeeec;
@@ -31,6 +18,20 @@
     color-scheme: light;
   }
 
+  :root.dark {
+    --ink: #14171a;
+    --surface: #191d21;
+    --elevated: #1f2429;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --fg: #e8e8e8;
+    --fg-muted: #9a9a9a;
+    --fg-faint: #5c5c5c;
+    --accent: #7cf7d6;
+    --accent-dim: rgba(124, 247, 214, 0.12);
+    color-scheme: dark;
+  }
+
   *,
   *::before,
   *::after {
@@ -39,16 +40,11 @@
     box-sizing: border-box;
   }
 
+  /* scroll-behavior: smooth は lenis と競合するため使わない */
   html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-  }
-
-  section[id] {
-    scroll-margin-top: 5rem;
   }
 
   body {
@@ -57,6 +53,15 @@
     color: var(--fg);
     overflow-x: hidden;
     transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* ゾーン連動の UI 反転（html.dark 切替）を滑らかに。
+     Tailwind の transition-* クラスや Reveal のインライン transition が優先される */
+  main *,
+  nav * {
+    transition-property: color, background-color, border-color;
+    transition-duration: 0.4s;
+    transition-timing-function: ease;
   }
 
   /* フィルムグレイン — 全面に薄く敷いて"紙 / 設計図"の質感を出す（テキストには非干渉レベル） */
@@ -109,6 +114,54 @@
     text-transform: uppercase;
     letter-spacing: 0.18em;
     color: var(--accent);
+  }
+
+  /* セクション背景の巨大透かし数字（kotek7 的なセクション分節の装飾） */
+  .watermark-num {
+    position: absolute;
+    top: -0.08em;
+    right: -0.04em;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: clamp(9rem, 20vw, 18rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--fg);
+    opacity: 0.05;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* 見出し上の短い罫線（ミニマルサイトの定石） */
+  .heading-rule::before {
+    content: '';
+    display: block;
+    width: 44px;
+    height: 1px;
+    background: var(--accent);
+    margin-bottom: 1.4rem;
+  }
+
+  /* セクション見出し（英語ラベルを見出し化）: 連番 + 名前 */
+  .section-head {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--fg);
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    line-height: 1;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5em;
+  }
+
+  .section-head .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.42em;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.1em;
   }
 
   .link-accent {

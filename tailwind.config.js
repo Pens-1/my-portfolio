@@ -21,9 +21,11 @@ export default {
         display: ['Archivo', 'Zen Kaku Gothic New', 'system-ui', 'sans-serif'],
       },
       fontSize: {
-        'display-xl': ['clamp(3rem, 8vw, 5.5rem)', { lineHeight: '1.02', letterSpacing: '-0.03em', fontWeight: '700' }],
-        'display-lg': ['clamp(2.25rem, 5vw, 3.5rem)', { lineHeight: '1.05', letterSpacing: '-0.025em', fontWeight: '700' }],
-        'display-md': ['clamp(1.75rem, 3.5vw, 2.25rem)', { lineHeight: '1.15', letterSpacing: '-0.02em', fontWeight: '600' }],
+        // 日本語ディスプレイは負でなく「正の字間」+ ウェイト900 が強い（受賞サイト調査より）
+        'display-2xl': ['clamp(2.15rem, 6.5vw, 6rem)', { lineHeight: '1.12', letterSpacing: '0.01em', fontWeight: '900' }],
+        'display-xl': ['clamp(3rem, 8vw, 5.5rem)', { lineHeight: '1.04', letterSpacing: '0.02em', fontWeight: '900' }],
+        'display-lg': ['clamp(2.5rem, 5.5vw, 4rem)', { lineHeight: '1.1', letterSpacing: '0.04em', fontWeight: '800' }],
+        'display-md': ['clamp(1.75rem, 3.5vw, 2.25rem)', { lineHeight: '1.15', letterSpacing: '0.03em', fontWeight: '700' }],
       },
       animation: {
         'fade-in': 'fadeIn 0.6s ease-out forwards',

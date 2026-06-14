@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="theme-color" content="#fafaf9" />
 
     <!-- Canonical -->
     <link rel="canonical" href="https://yamataku.dev/" />
@@ -96,14 +96,13 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" as="style">
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
 
-    <!-- Theme bootstrap: avoid FOUC -->
+    <!-- Theme bootstrap: avoid FOUC（既定=ライト。キーは theme.v2 — 旧 'theme' のダーク保存を引き継がない） -->
     <script>
       (function () {
         try {
-          var stored = localStorage.getItem('theme');
-          var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-          var theme = stored || (prefersLight ? 'light' : 'dark');
-          if (theme === 'light') document.documentElement.classList.add('light');
+          if (localStorage.getItem('theme.v2') === 'dark') {
+            document.documentElement.classList.add('dark');
+          }
         } catch (e) {}
       })();
     </script>
@@ -112,8 +111,7 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
 
-    <!-- Cloudflare Web Analytics (privacy-friendly, cookie-less) -->
-    <!-- Replace {{CF_ANALYTICS_TOKEN}} with the token from Cloudflare dashboard → Analytics → Web Analytics after deploy -->
-    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "{{CF_ANALYTICS_TOKEN}}"}'></script>
+    <!-- Cloudflare Web Analytics はトークン未設定のままエラーを出すだけだったので撤去。
+         導入するならダッシュボードで発行したトークン入りの beacon スクリプトをここに貼る -->
   </body>
 </html>
