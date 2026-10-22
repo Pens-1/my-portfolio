@@ -23,7 +23,7 @@ const BottomNav = () => {
   return (
     <nav
       aria-label="Primary"
-      className="fixed inset-x-0 bottom-0 z-40 pt-14 bg-gradient-to-t from-ink via-ink/80 to-transparent"
+      className="fixed inset-x-0 bottom-0 z-40 pt-14 bg-gradient-to-t from-ink from-70% to-transparent"
     >
       <ul className="container-wide flex items-center justify-between sm:justify-center sm:gap-10 md:gap-20 pb-6 md:pb-8">
         {SECTION_IDS.map((id) => (
