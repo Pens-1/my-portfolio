@@ -33,6 +33,7 @@ const TIMELINE = [
 const LINKS = [
   { label: 'GitHub', handle: '@Pens-1', href: 'https://github.com/Pens-1' },
   { label: 'Zenn', handle: '@pockypen', href: 'https://zenn.dev/pockypen' },
+  { label: '組織', handle: 'ローム記念館プロジェクト', href: 'https://rohm.doshisha.ac.jp/rohm/project/introduction.html' },
   { label: 'Email', handle: 'me@yamataku.dev', href: 'mailto:me@yamataku.dev' },
 ];
 

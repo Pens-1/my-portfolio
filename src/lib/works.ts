@@ -146,6 +146,46 @@ const WORKS: Work[] = [
     githubUrl: 'https://github.com/Pens-1/ortools-scheduling-verify',
     repoVisibility: 'public',
   },
+  {
+    id: 13,
+    slug: 'black-ram',
+    title: 'BLACK RAM 公式サイト',
+    subtitle: '友人のバンドのために作った公式サイト（試聴・ライブ・SNS）',
+    group: 'web',
+    year: '2026.10',
+    description:
+      '京都のバンド BLACK RAM の公式サイト。EP を Spotify 埋め込みでその場で試聴でき、白黒のストロボ演出ヒーロー、ライブ情報、SNS 導線を備える。企画から実装・公開まで一人で担当。',
+    technologies: ['Astro', 'TypeScript', 'Cloudflare'],
+    githubUrl: 'https://github.com/Pens-1/black-ram-hp',
+    demoUrl: 'https://blackram-music.com/',
+    repoVisibility: 'public',
+  },
+  {
+    id: 14,
+    slug: 'tomosigoto-site',
+    title: 'トモシゴト Design & Code lab. 公式サイト',
+    subtitle: '同志社大学ローム記念館プロジェクトの公式サイトを一人で制作',
+    group: 'web',
+    year: '2026.08',
+    description:
+      'リーダーを務めるプロジェクト「トモシゴト Design & Code lab.」の公式サイト。AI活用を前提とするプログラミング教育基盤を展開するチームの活動を紹介する。設計から実装・公開まで一人で担当。',
+    technologies: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Cloudflare Pages'],
+    demoUrl: 'https://tomosigoto.pages.dev/',
+    repoVisibility: 'private',
+  },
+  {
+    id: 15,
+    slug: 'portfolio',
+    title: 'このポートフォリオ',
+    subtitle: 'taste-skill 等で設計し Claude Code で実装した本サイト',
+    group: 'web',
+    year: '2026.10',
+    description:
+      'ESP32 基板を手続き生成した 3D ヒーローと、グリッド背景・名前主役のレイアウトで構成した1ページのポートフォリオ。デザイン系スキル（taste-skill ほか）で方針を詰め、Claude Code で実装した。',
+    technologies: ['React', 'TypeScript', 'Vite', 'Three.js', 'Tailwind CSS'],
+    githubUrl: 'https://github.com/Pens-1/my-portfolio',
+    repoVisibility: 'public',
+  },
 ];
 
 export const getAllWorks = (): Work[] =>
