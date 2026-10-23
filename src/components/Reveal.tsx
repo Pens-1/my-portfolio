@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { useReducedMotion } from '../hooks/useReducedMotion';
-
-const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+import { useRef, type ReactNode } from 'react';
+import { useGSAP } from '@gsap/react';
+import { EASE_OUT, gsap, MOTION_QUERY } from '../lib/gsap';
 
 interface RevealProps {
   children: ReactNode;
@@ -10,42 +9,30 @@ interface RevealProps {
   className?: string;
 }
 
-// スクロール出現（one-shot）。reduced-motion 時は即表示
+// スクロール出現（one-shot）。短く速いスライドイン。動きを減らす設定では何もしない（最初から表示）
 const Reveal = ({ children, delay = 0, className }: RevealProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [shown, setShown] = useState(false);
-  const reduced = useReducedMotion();
 
-  useEffect(() => {
-    if (reduced) {
-      setShown(true);
-      return;
-    }
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setShown(true);
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -8% 0px' },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [reduced]);
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add(MOTION_QUERY, () => {
+        gsap.from(ref.current, {
+          y: 20,
+          opacity: 0,
+          duration: 0.45,
+          delay: delay / 1000,
+          ease: EASE_OUT,
+          scrollTrigger: { trigger: ref.current, start: 'top 90%', once: true },
+        });
+      });
+      return () => mm.revert();
+    },
+    { scope: ref },
+  );
 
   return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: shown ? 1 : 0,
-        transform: shown ? 'none' : 'translateY(24px)',
-        transition: `opacity 0.65s ${EASE} ${delay}ms, transform 0.65s ${EASE} ${delay}ms`,
-      }}
-    >
+    <div ref={ref} className={className}>
       {children}
     </div>
   );

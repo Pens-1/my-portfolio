@@ -1,142 +1,63 @@
-# My Portfolio
+# Portfolio
 
-モダンで洗練されたポートフォリオサイト。React、TypeScript、Tailwind CSSを使用して構築されています。
+同志社大学 理工学部 機械システム工学科のポートフォリオ。1ページ構成（Home / About / Activities / Posts）。
 
-A modern and sophisticated portfolio website built with React, TypeScript, and Tailwind CSS.
+## 技術スタック
 
-## 🚀 特徴 / Features
+- React 18 / TypeScript / Vite 5
+- Tailwind CSS 3
+- react-router-dom 7
+- lucide-react（アイコン）
+- GSAP + ScrollTrigger（動き。`prefers-reduced-motion` では無効）
+- 背景はドットグリッド（`GridBackground`）。3D は廃止
 
-- **3Dヒーロー** - WebGL(Three.js / React Three Fiber)のワイヤーフレーム3Dモデル。マウス追従・自転・浮遊、`prefers-reduced-motion` 対応、画面外で描画停止
-- **レスポンシブデザイン** - あらゆるデバイスに対応
-- **モダンなUI/UX** - 洗練されたアニメーションとトランジション
-- **高速パフォーマンス** - Viteによる最適化されたビルド
-- **型安全** - TypeScriptによる完全な型サポート
-- **Docker対応** - 簡単なデプロイメント
-
-## 🛠️ 技術スタック / Tech Stack
-
-- **React 18** - UIライブラリ
-- **TypeScript** - 型安全性
-- **Vite** - ビルドツール
-- **Tailwind CSS** - ユーティリティファーストCSS
-- **Lucide React** - アイコンライブラリ
-- **Three.js / React Three Fiber / drei** - 3Dヒーロー（遅延ロードで初期表示に影響なし）
-- **Supabase** - バックエンドサービス（必要に応じて）
-- **Docker** - コンテナ化
-
-## 📦 インストール / Installation
+## 開発
 
 ```bash
-# 依存関係のインストール
 npm install
+npm run dev        # http://localhost:4444
+npm run build      # dist/ に出力
+npm run preview    # ビルド結果の確認
+npm run lint
+npm run typecheck
 ```
 
-## 🏃 開発サーバー起動 / Run Development Server
+環境変数は不要。
 
-```bash
-npm run dev
-```
+## ビルド・デプロイ
 
-ブラウザで `http://localhost:4444` を開いてください。
+- 本番: Cloudflare Pages（ビルドコマンド `npm run build`、出力 `dist`）
+- `public/_redirects` で SPA フォールバック、`public/_headers` でキャッシュ・セキュリティヘッダーを設定
+- Docker（任意）
+  - 開発: `docker compose up portfolio-dev`（`localhost:4444`）
+  - 本番相当: `docker compose up portfolio`（nginx、`localhost:3000`）
 
-## 🏗️ ビルド / Build
-
-```bash
-npm run build
-```
-
-ビルドされたファイルは `dist` ディレクトリに生成されます。
-
-## 🐳 Dockerで実行 / Run with Docker
-
-### Docker Composeを使用
-
-```bash
-docker-compose up
-```
-
-### Dockerfileを使用
-
-```bash
-# イメージをビルド
-docker build -t my-portfolio .
-
-# コンテナを実行
-docker run -p 3000:80 my-portfolio
-```
-
-ブラウザで `http://localhost:3000` を開いてください。
-
-## 📁 プロジェクト構成 / Project Structure
+## ディレクトリ構成
 
 ```
-my-portfolio/
-├── src/
-│   ├── components/       # Reactコンポーネント
-│   │   ├── Navigation.tsx
-│   │   ├── Home.tsx
-│   │   ├── Hero3D.tsx    # 3Dヒーロー (Three.js / R3F)
-│   │   ├── Works.tsx
-│   │   ├── About.tsx
-│   │   └── Contact.tsx
-│   ├── hooks/           # カスタムフック
-│   ├── lib/             # データ定義 (scene3d.ts: 3Dモデル配列 など)
-│   ├── App.tsx          # メインアプリケーション
-│   ├── main.tsx         # エントリーポイント
-│   └── index.css        # グローバルスタイル
-├── public/              # 静的ファイル
-│   └── models/          # 3Dモデル (.glb, すべて CC0)
-├── dist/                # ビルド出力
-├── Dockerfile           # Docker設定
-├── docker-compose.yml   # Docker Compose設定
-├── vite.config.ts       # Vite設定
-├── tailwind.config.js   # Tailwind設定
-└── package.json         # 依存関係
+src/
+  main.tsx, App.tsx      エントリ・ルーティング
+  index.css              グローバル CSS
+  components/
+    sections/            HomeSection / AboutSection / ActivitiesSection / PostsSection
+    GridBackground.tsx   ドットグリッド背景
+    BottomNav.tsx, ThemeToggle.tsx, Reveal.tsx, NotFound.tsx
+  hooks/                 useReducedMotion など
+  lib/                   works.ts / activities.ts / posts.ts ほか
+public/                  _headers, _redirects, og.png, favicon, sitemap.xml など
+scripts/                 画像・動画フレーム処理用シェルスクリプト
 ```
 
-## 📝 利用可能なスクリプト / Available Scripts
+## 内容の更新方法
 
-- `npm run dev` - 開発サーバーを起動
-- `npm run build` - プロダクション用ビルド
-- `npm run preview` - ビルドされたアプリのプレビュー
-- `npm run lint` - ESLintでコードチェック
-- `npm run typecheck` - TypeScriptの型チェック
+- Works: `src/lib/works.ts` の `WORKS` 配列に追加（`group` でカテゴリ分け。表示は Activities セクション）
+- 受賞・ロボコン年表: `src/lib/activities.ts` の `AWARDS` / `ROBOCON`
+- 外部記事リンク: `src/lib/posts.ts` の `POSTS`（Zenn プロフィールは `ZENN_PROFILE`）
+- About の経歴・所属・技術・リンク: `src/components/sections/AboutSection.tsx` 冒頭の定数
+  `CAPABILITIES` / `STACKS` / `AFFILIATIONS` / `TIMELINE` / `LINKS`
 
-## 🌐 デプロイ / Deployment
+## ライセンス
 
-このプロジェクトは以下のプラットフォームにデプロイできます：
+未設定。無断転載・再利用は不可。
 
-- **Cloudflare Pages** - 本番運用中（`public/_redirects` / `public/_headers` 設定済み）
-- **Vercel** - ゼロ設定でReactアプリをデプロイ
-- **Netlify** - 静的サイトホスティング
-- **GitHub Pages** - 無料ホスティング
-- **Docker** - 任意のコンテナホスティングサービス
-
-## 📄 ライセンス / License
-
-MIT License
-
-## 👤 作者 / Author
-
-Your Name
-
----
-
-## 💡 カスタマイズ / Customization
-
-ポートフォリオを自分のものにカスタマイズするには：
-
-1. `src/components/Home.tsx` - ヒーローセクションのテキストを編集
-2. `src/components/Works.tsx` - プロジェクト一覧を更新
-3. `src/components/About.tsx` - 自己紹介セクションを編集
-4. `src/components/Contact.tsx` - 連絡先情報を更新
-5. `tailwind.config.js` - カラーテーマをカスタマイズ
-
-## 🤝 コントリビューション / Contributing
-
-プルリクエストを歓迎します！大きな変更の場合は、まずイシューを開いて変更内容を議論してください。
-
-## 📧 連絡先 / Contact
-
-ご質問やご提案がございましたら、お気軽にお問い合わせください。
-
+連絡先: GitHub [@Pens-1](https://github.com/Pens-1) / me@yamataku.dev

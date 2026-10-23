@@ -90,6 +90,21 @@
     text-decoration: none;
   }
 
+  /* 日本語タイポ: 未対応ブラウザでは無視されて通常の折返しになる */
+  body {
+    line-height: 1.8;
+    line-break: strict;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  .section-head {
+    word-break: auto-phrase;
+    text-wrap: balance;
+  }
+
   button {
     font-family: inherit;
     background: none;
@@ -140,6 +155,8 @@
     height: 1px;
     background: var(--accent);
     margin-bottom: 1.4rem;
+    transform: scaleX(var(--rule, 1));
+    transform-origin: left;
   }
 
   /* セクション見出し（英語ラベルを見出し化）: 連番 + 名前 */

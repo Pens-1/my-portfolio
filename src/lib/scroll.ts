@@ -1,4 +1,5 @@
 import Lenis from 'lenis';
+import { gsap, ScrollTrigger } from './gsap';
 
 export type SectionId = 'home' | 'about' | 'activities' | 'posts';
 export const SECTION_IDS: readonly SectionId[] = ['home', 'about', 'activities', 'posts'];
@@ -24,7 +25,7 @@ class ScrollManager {
   active: SectionId = 'home';
 
   private lenis: Lenis | null = null;
-  private rafId = 0;
+  private tick: ((time: number) => void) | null = null;
   private listeners = new Set<ActiveListener>();
   private scrollListeners = new Set<() => void>();
   private navLock: SectionId | null = null;
@@ -41,12 +42,13 @@ class ScrollManager {
         smoothWheel: true,
         syncTouch: false,
         autoResize: true,
+        autoRaf: false,
       });
-      const raf = (time: number) => {
-        this.lenis?.raf(time);
-        this.rafId = requestAnimationFrame(raf);
-      };
-      this.rafId = requestAnimationFrame(raf);
+      // ScrollTrigger と同じ ticker で駆動（gsap.ticker は秒、lenis.raf はミリ秒）
+      this.lenis.on('scroll', ScrollTrigger.update);
+      this.tick = (time) => this.lenis?.raf(time * 1000);
+      gsap.ticker.add(this.tick);
+      gsap.ticker.lagSmoothing(0);
     }
 
     const onScroll = () => this.handleScroll();
@@ -87,7 +89,9 @@ class ScrollManager {
   }
 
   destroy() {
-    cancelAnimationFrame(this.rafId);
+    if (this.tick) gsap.ticker.remove(this.tick);
+    this.tick = null;
+    gsap.ticker.lagSmoothing(500, 33);
     this.lenis?.destroy();
     this.lenis = null;
     this.resizeObserver?.disconnect();

@@ -1,42 +1,68 @@
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
 import { ArrowRight, Github, Mail } from 'lucide-react';
 import { scrollManager } from '../../lib/scroll';
+import { gsap, MOTION_QUERY } from '../../lib/gsap';
 
 // ヒーロー。文字は左55vw、右は3D（白い廊下の消失点）用の余白
-const HomeSection = () => (
-  <section id="home" className="relative">
+const HomeSection = () => {
+  const root = useRef<HTMLElement>(null);
+
+  // 入場: 名前が下から立ち上がり → 下線が伸び → 肩書き・一言・ボタン。合計1.1秒。動きを減らす設定では何もしない
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add(MOTION_QUERY, () => {
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+        tl.from('[data-hero="name"]', { yPercent: 105, duration: 0.7 }, 0)
+          .from('[data-hero="rule"]', { scaleX: 0, duration: 0.4 }, 0.4)
+          .from('[data-hero="role"]', { y: 12, opacity: 0, duration: 0.4 }, 0.5)
+          .from('[data-hero="lead"]', { y: 12, opacity: 0, duration: 0.4 }, 0.6)
+          .from('[data-hero="cta"]', { y: 12, opacity: 0, duration: 0.4 }, 0.7);
+      });
+      return () => mm.revert();
+    },
+    { scope: root },
+  );
+
+  return (
+    <section id="home" ref={root} className="relative">
     <div className="min-h-[88vh] sm:min-h-screen flex items-center">
       <div className="container-wide w-full">
         <div className="max-w-[54rem]">
-          <h1
-            className="font-display font-black text-fg leading-none opacity-0 animate-fade-up"
-            style={{ fontSize: 'clamp(3.5rem, 13vw, 9rem)', letterSpacing: '-0.02em', animationDelay: '120ms' }}
-          >
-            Yamataku
-          </h1>
+          <div className="overflow-hidden">
+            <h1
+              data-hero="name"
+              className="font-display font-black text-fg leading-none"
+              style={{ fontSize: 'clamp(3.5rem, 13vw, 9rem)', letterSpacing: '-0.02em' }}
+            >
+              Yamataku
+            </h1>
+          </div>
 
           <div
-            className="h-px w-16 bg-accent mt-7 mb-5 opacity-0 animate-fade-up"
-            style={{ animationDelay: '260ms' }}
+            data-hero="rule"
+            className="h-px w-16 bg-accent mt-7 mb-5 origin-left"
             aria-hidden="true"
           />
 
           <p
-            className="font-mono text-sm sm:text-base text-fg tracking-wide opacity-0 animate-fade-up"
-            style={{ animationDelay: '340ms' }}
+            data-hero="role"
+            className="font-mono text-sm sm:text-base text-fg tracking-wide"
           >
             Full-stack <span className="text-fg-faint">/</span> ML{' '}
             <span className="text-fg-faint">/</span> Hardware Engineer
           </p>
           <p
-            className="text-fg-muted mt-3 mb-9 leading-relaxed opacity-0 animate-fade-up"
-            style={{ animationDelay: '440ms' }}
+            data-hero="lead"
+            className="text-fg-muted mt-3 mb-9 leading-relaxed"
           >
             実運用プロダクトを、<span className="text-accent">一人で本番まで</span>。
           </p>
 
           <div
-            className="flex flex-wrap items-center gap-3 opacity-0 animate-fade-up"
-            style={{ animationDelay: '540ms' }}
+            data-hero="cta"
+            className="flex flex-wrap items-center gap-3"
           >
             <a
               href="#activities"
@@ -70,6 +96,7 @@ const HomeSection = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default HomeSection;
