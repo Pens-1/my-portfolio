@@ -3,6 +3,7 @@ import Reveal from '../Reveal';
 
 // 「何ができるか」を端的に（詳細な道具は使用技術で見せる）
 const CAPABILITIES = [
+  '機械設計・加工',
   'Web 開発',
   'ローカル LLM・自動化',
   '組み込み・基板設計',
@@ -11,6 +12,7 @@ const CAPABILITIES = [
 ];
 
 const STACKS = [
+  { label: '機械設計・加工', items: ['SOLIDWORKS', 'Fusion 360', 'フライス', '旋盤'] },
   { label: 'Web・アプリ', items: ['TypeScript', 'React / Next.js', 'Python / FastAPI', 'PostgreSQL', 'Tailwind CSS', 'Docker'] },
   { label: 'AI・自動化', items: ['Python', 'MCP / FastMCP', 'Ollama・ローカル LLM', 'n8n', 'Playwright'] },
   { label: 'ハードウェア・ロボティクス', items: ['C / C++', 'ESP32 / nRF52840', 'KiCad', 'PlatformIO', 'ROS2'] },
@@ -20,7 +22,7 @@ const STACKS = [
 const AFFILIATIONS = [
   'トモシゴト Design & Code lab.（同志社大学ローム記念館プロジェクト・リーダー）',
   '同志社大学ロボット研究会 DRC',
-  '同志社大学フォーミュラプロジェクト DUFP（2026 ステアリング担当 / 2027 コストリーダー）',
+  '同志社大学フォーミュラプロジェクト DUFP（2026 ステアリング担当 / 2027 ステアリング担当・電装班・コストリーダー）',
   '同志社大学 理工学部 機械システム工学科',
 ];
 
@@ -34,6 +36,7 @@ const LINKS = [
   { label: 'GitHub', handle: '@Pens-1', href: 'https://github.com/Pens-1' },
   { label: 'Zenn', handle: '@pockypen', href: 'https://zenn.dev/pockypen' },
   { label: '組織', handle: 'ローム記念館プロジェクト', href: 'https://rohm.doshisha.ac.jp/rohm/project/introduction.html' },
+  { label: 'DUFP', handle: 'dufp.racing', href: 'https://dufp.racing' },
   { label: 'Email', handle: 'me@yamataku.dev', href: 'mailto:me@yamataku.dev' },
 ];
 

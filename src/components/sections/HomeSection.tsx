@@ -50,8 +50,9 @@ const HomeSection = () => {
             data-hero="role"
             className="font-mono text-sm sm:text-base text-fg tracking-wide"
           >
-            Full-stack <span className="text-fg-faint">/</span> ML{' '}
-            <span className="text-fg-faint">/</span> Hardware Engineer
+            Mechanical&nbsp;<span className="text-fg-faint">/</span> Hardware&nbsp;
+            <span className="text-fg-faint">/</span>{' '}
+            <span className="whitespace-nowrap">Full-stack Engineer</span>
           </p>
           <p
             data-hero="lead"
